@@ -1,6 +1,7 @@
 // app/page.tsx
 import type { Metadata } from "next";
 import { ContactForm } from "./contact/ContactForm";
+import Portfolio from './components/Portfolio';
 
 export const metadata: Metadata = {
   title: "ToddTech LLC - Expert IT Solutions for Growing Businesses",
@@ -46,30 +47,38 @@ export default function Home() {
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <section className="pt-24 pb-16 md:pt-32 md:pb-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          {/* Optional: subtle background pattern - for now we use gradient only */}
-          <div className="relative">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
-              Expert IT Solutions for
-              <br className="hidden sm:block" />
-              Growing Businesses
-            </h1>
+{/* Hero Section */}
+<section className="relative pt-24 pb-16 md:pt-32 md:pb-24 overflow-hidden">
+  {/* Background + overlay layer – confined to this section only */}
+  <div
+    className="absolute inset-0 bg-no-repeat bg-cover bg-center z-0"
+    style={{ backgroundImage: "url('/images/hero-bg.jpg')" }}
+  >
+    <div className="absolute inset-0 bg-black/70 pointer-events-none" />
+  </div>
 
-            <p className="text-xl md:text-2xl text-gray-300 mb-10 max-w-3xl mx-auto">
-              Cybersecurity, Cloud Migration, Custom Software & 24/7 Support
-            </p>
+  {/* Main content – raised above background */}
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+    <div className="relative">
+      <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
+        Expert IT Solutions for
+        <br className="hidden sm:block" />
+        Growing Businesses
+      </h1>
 
-            <a
-              href="#contact"
-              className="inline-block bg-cyan-500 text-white text-lg font-medium px-10 py-4 rounded-lg hover:bg-cyan-600 transition-colors shadow-lg shadow-cyan-500/20"
-            >
-              Get a Free Consultation
-            </a>
-          </div>
-        </div>
-      </section>
+      <p className="text-xl md:text-2xl text-gray-300 mb-10 max-w-3xl mx-auto">
+        Cybersecurity, Cloud Migration, Custom Software & 24/7 Support
+      </p>
+
+      <a
+        href="#contact"
+        className="inline-block bg-cyan-500 text-white text-lg font-medium px-10 py-4 rounded-lg hover:bg-cyan-600 transition-colors shadow-lg shadow-cyan-500/20"
+      >
+        Get a Free Consultation
+      </a>
+    </div>
+  </div>
+</section>
 
       {/* Services Grid */}
       <section className="py-16 bg-gray-900/50">
@@ -113,6 +122,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+ <Portfolio />
+
 
       {/* Contact Section */}
       <section id="contact" className="py-20">
