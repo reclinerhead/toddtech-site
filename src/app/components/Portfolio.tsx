@@ -1,6 +1,27 @@
+"use client";
+
+import { useState } from "react";
+import Image from "next/image";
+import Lightbox from "yet-another-react-lightbox";
+import "yet-another-react-lightbox/styles.css";
+
+const slides = [
+  { src: "/images/portfolio_TT_1.png", alt: "Restaurant & Bait Shop Website" },
+  { src: "/images/portfolio_TT_2.png", alt: "Restaurant Manager Dashboard" },
+  { src: "/images/portfolio_TT_3.png", alt: "AI Tools & Business Intelligence" },
+];
+
 export default function Portfolio() {
+  const [lightboxIndex, setLightboxIndex] = useState(-1);
+
   return (
     <section id="portfolio" className="py-24 lg:py-32 bg-no-repeat bg-fixed relative overflow-hidden">
+      <Lightbox
+        open={lightboxIndex >= 0}
+        index={lightboxIndex}
+        close={() => setLightboxIndex(-1)}
+        slides={slides}
+      />
       <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/50 to-black/70"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-12">
@@ -17,36 +38,74 @@ export default function Portfolio() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {/* Portfolio Item 1 */}
           <div className="bg-gray-800/50 border border-gray-700 rounded-xl p-6 hover:border-cyan-500/50 transition-colors">
-            <img src="/images/Screenshot 2026-03-19 095057.png" alt="Restaurant & Bait Shop Website" className="w-full h-auto rounded-lg mb-4" />
+            <div
+              className="relative w-full h-52 rounded-lg mb-4 overflow-hidden cursor-zoom-in"
+              onClick={() => setLightboxIndex(0)}
+            >
+              <Image
+                src="/images/portfolio_TT_1.png"
+                alt="Restaurant & Bait Shop Website"
+                fill
+                className="object-cover"
+              />
+            </div>
             <p className="text-gray-400 mb-4">
-              Simulated restaurant + bait shop website built as a learning project and portfolio piece. Features a public-facing site, a secure manager dashboard, and real AI integrations for review management and customer service chat.
+              Professional, fast websites built with Next.js for small restaurants and businesses. Get a modern online presence that looks great, loads quickly on phones, and helps attract more customers without the technical stress.
             </p>
-         
-            <span className="text-cyan-400 text-sm font-medium">Features: Dynamic menu, review system, and photo gallery. AI-based customer service chat.   AI-based review tools including abuse prevention, sentiment analysis, and actionable item reporting.</span>
+            <span className="text-cyan-400 text-sm font-medium">Features: Dynamic menus, beautiful photo galleries, and easy customer review systems.</span>
             <a href="https://todds-grill-demo.toddtech.llc" target="_blank" rel="noopener noreferrer" className="mt-6 px-6 py-3 bg-gray-800/50 border border-cyan-500/50 rounded-xl hover:border-cyan-400 hover:bg-cyan-500/20 transition-all text-center block font-semibold text-cyan-300 hover:text-cyan-100 text-base">
+              View Website
+            </a>
+          </div>
+
+          {/* Portfolio Item 2 */}
+          <div className="bg-gray-800/50 border border-gray-700 rounded-xl p-6 hover:border-cyan-500/50 transition-colors">
+            <div
+              className="relative w-full h-52 rounded-lg mb-4 overflow-hidden cursor-zoom-in"
+              onClick={() => setLightboxIndex(1)}
+            >
+              <Image
+                src="/images/portfolio_TT_2.png"
+                alt="Restaurant Manager Dashboard"
+                fill
+                className="object-cover"
+              />
+            </div>
+            <p className="text-gray-400 mb-4">
+              Control every part of your restaurant from one secure and simple dashboard. Update menus, respond to reviews, manage reservations, track performance, and handle daily operations with ease.
+            </p>
+            <span className="text-cyan-400 text-sm font-medium">Features: Menu management, review tools, analytics, and staff coordination.</span>
+            <a href="https://todds-grill-demo.toddtech.llc/manager" target="_blank" rel="noopener noreferrer" className="mt-6 px-6 py-3 bg-gray-800/50 border border-cyan-500/50 rounded-xl hover:border-cyan-400 hover:bg-cyan-500/20 transition-all text-center block font-semibold text-cyan-300 hover:text-cyan-100 text-base">
               View Live Demo
             </a>
             <p className="text-gray-500 text-xs mt-3 text-center italic leading-relaxed">
               Includes read-only manager dashboard access
             </p>
           </div>
-          {/* Portfolio Item 2 */}
-          <div className="bg-gray-800/50 border border-gray-700 rounded-xl p-6 hover:border-cyan-500/50 transition-colors">
-            <div className="text-cyan-400 text-4xl mb-4">🔒</div>
-            <h3 className="text-xl font-semibold mb-3">Cybersecurity Audit</h3>
-            <p className="text-gray-400 mb-4">
-              Conducted comprehensive security assessment and implemented protection measures.
-            </p>
-            <span className="text-cyan-400 text-sm font-medium">Services: Penetration Testing, Compliance</span>
-          </div>
+
           {/* Portfolio Item 3 */}
           <div className="bg-gray-800/50 border border-gray-700 rounded-xl p-6 hover:border-cyan-500/50 transition-colors">
-            <div className="text-cyan-400 text-4xl mb-4">☁️</div>
-            <h3 className="text-xl font-semibold mb-3">Cloud Migration</h3>
+            <div
+              className="relative w-full h-52 rounded-lg mb-4 overflow-hidden cursor-zoom-in"
+              onClick={() => setLightboxIndex(2)}
+            >
+              <Image
+                src="/images/portfolio_TT_3.png"
+                alt="AI Tools & Business Intelligence"
+                fill
+                className="object-cover"
+              />
+            </div>
             <p className="text-gray-400 mb-4">
-              Migrated legacy systems to AWS cloud infrastructure with zero downtime.
+              Helpful AI tools that improve service and give you useful business intelligence. Includes a smart customer service chat, review sentiment analysis with abuse protection, and actionable summaries like the &quot;Top 10 issues to fix right now.&quot;
             </p>
-            <span className="text-cyan-400 text-sm font-medium">Cloud: AWS, Docker, Kubernetes</span>
+            <span className="text-cyan-400 text-sm font-medium">Features: 24/7 AI Chat, Review Analysis, Actionable Insights</span>
+            <a href="https://todds-grill-demo.toddtech.llc/manager" target="_blank" rel="noopener noreferrer" className="mt-6 px-6 py-3 bg-gray-800/50 border border-cyan-500/50 rounded-xl hover:border-cyan-400 hover:bg-cyan-500/20 transition-all text-center block font-semibold text-cyan-300 hover:text-cyan-100 text-base">
+              View Live Demo
+            </a>
+            <p className="text-gray-500 text-xs mt-3 text-center italic leading-relaxed">
+              Includes read-only manager dashboard access
+            </p>
           </div>
         </div>
       </div>

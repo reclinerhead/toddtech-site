@@ -1,7 +1,9 @@
-// app/page.tsx
+﻿// app/page.tsx
 import type { Metadata } from "next";
 import { ContactForm } from "./contact/ContactForm";
 import Portfolio from './components/Portfolio';
+import Image from "next/image";
+
 
 export const metadata: Metadata = {
   title: "ToddTech LLC - Expert IT Solutions for Growing Businesses",
@@ -24,9 +26,8 @@ export default function Home() {
             {/* Menu links - we'll make this responsive later */}
             <div className="hidden md:flex items-center space-x-8">
               <a href="#" className="text-gray-300 hover:text-cyan-400 transition-colors">Home</a>
-              <a href="#" className="text-gray-300 hover:text-cyan-400 transition-colors">Services</a>
-              <a href="#" className="text-gray-300 hover:text-cyan-400 transition-colors">About Us</a>
-              <a href="#" className="text-gray-300 hover:text-cyan-400 transition-colors">Portfolio</a>
+             
+              <a href="#portfolio" className="text-gray-300 hover:text-cyan-400 transition-colors">Portfolio</a>
               <a
                 href="#contact"
                 className="bg-cyan-500 text-white px-5 py-2 rounded-md font-medium hover:bg-cyan-600 transition-colors"
@@ -84,12 +85,22 @@ export default function Home() {
       <section className="py-16 bg-gray-900/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+            {/* Service Card 3 */}
+            <div className="bg-gray-800/50 border border-gray-700 rounded-xl p-8 text-center hover:border-cyan-500/50 transition-colors">
+              <div className="text-cyan-400 text-5xl mb-4">{"</>"}</div>
+              <h3 className="text-xl font-semibold mb-3">Website Development</h3>
+              <p className="text-gray-400">
+                Custom and mobile-friendly websites built with Next.js, TypeScript, and modern best practices.
+              </p>
+            </div>
+
             {/* Service Card 1 */}
             <div className="bg-gray-800/50 border border-gray-700 rounded-xl p-8 text-center hover:border-cyan-500/50 transition-colors">
               <div className="text-cyan-400 text-5xl mb-4">🛡️</div> {/* Replace with real icon later */}
-              <h3 className="text-xl font-semibold mb-3">Cybersecurity</h3>
+              <h3 className="text-xl font-semibold mb-3">Web Applications</h3>
               <p className="text-gray-400">
-                Protect your business from threats with modern security solutions tailored to your needs.
+                Dynamic and secure data driven web applications built with React, Node.js, and backend APIs with AI integration options.
               </p>
             </div>
 
@@ -98,18 +109,11 @@ export default function Home() {
               <div className="text-cyan-400 text-5xl mb-4">☁️</div>
               <h3 className="text-xl font-semibold mb-3">Cloud Migration</h3>
               <p className="text-gray-400">
-                Move to the cloud safely and efficiently — we handle AWS, Azure, or Google Cloud.
+                Move to the cloud services such as email or offsite backup storage safely and efficiently.
               </p>
             </div>
 
-            {/* Service Card 3 */}
-            <div className="bg-gray-800/50 border border-gray-700 rounded-xl p-8 text-center hover:border-cyan-500/50 transition-colors">
-              <div className="text-cyan-400 text-5xl mb-4">{"</>"}</div>
-              <h3 className="text-xl font-semibold mb-3">Software Development</h3>
-              <p className="text-gray-400">
-                Custom apps and tools built with Next.js, TypeScript, and modern best practices.
-              </p>
-            </div>
+            
 
             {/* Service Card 4 */}
             <div className="bg-gray-800/50 border border-gray-700 rounded-xl p-8 text-center hover:border-cyan-500/50 transition-colors">
@@ -151,19 +155,39 @@ export default function Home() {
                 <h3 className="text-lg font-semibold text-white mb-5">Contact Information</h3>
                 <div className="space-y-4">
                   <div className="flex items-start gap-3">
-                    <span className="text-cyan-400 text-xl mt-0.5">📍</span>
+                    {/* Person icon */}
+                    <svg className="w-5 h-5 text-cyan-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" strokeWidth={1.75} viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                    </svg>
+                    <div>
+                      <p className="text-sm text-gray-500 mb-0.5">Name</p>
+                      <p className="text-gray-300">Todd Wyatt</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    {/* Map pin icon */}
+                    <svg className="w-5 h-5 text-cyan-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" strokeWidth={1.75} viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                    </svg>
                     <div>
                       <p className="text-sm text-gray-500 mb-0.5">Location</p>
                       <p className="text-gray-300">Michigan, USA</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
-                    <span className="text-cyan-400 text-xl mt-0.5">🕐</span>
+                    {/* Clock icon */}
+                    <svg className="w-5 h-5 text-cyan-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" strokeWidth={1.75} viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    </svg>
                     <div>
                       <p className="text-sm text-gray-500 mb-0.5">Response Time</p>
                       <p className="text-gray-300">Within 1 business day</p>
                     </div>
                   </div>
+                 
+                 
+
                 </div>
               </div>
 
@@ -171,11 +195,11 @@ export default function Home() {
                 <h3 className="text-lg font-semibold text-white mb-4">What We Can Help With</h3>
                 <ul className="space-y-2.5">
                   {[
-                    'Cybersecurity & Threat Assessment',
-                    'Cloud Migration (AWS, Azure, GCP)',
-                    'Custom Software Development',
-                    '24/7 IT Support & Managed Services',
-                    'Network Infrastructure & Setup',
+                    'Modern, fast-loading and mobile-friendly websites for small businesses',
+                    'Security-minded IT solutions to protect your data and customers',
+                    'Database, Storage and Backup solutions',
+                    'Web Analytics setup and reporting',
+                    'General IT Support',
                   ].map((item) => (
                     <li key={item} className="flex items-start gap-2 text-gray-400 text-sm">
                       <span className="text-cyan-500 mt-0.5">›</span>
@@ -183,7 +207,14 @@ export default function Home() {
                     </li>
                   ))}
                 </ul>
+
+                <div>
+                    <Image src="/images/comptia-security-ce-certification.png" alt="CompTIA Security+ Certified" width={150} height={150} className="mt-4" />
+                 </div>
+
               </div>
+
+              
             </div>
 
             {/* Form Panel */}
