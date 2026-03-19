@@ -29,6 +29,8 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased scroll-smooth`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
+
+      {/* adding vercel analytics to root layout so it can track page views across the entire app  */}
     <Analytics />
     </html>
   );
