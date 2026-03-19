@@ -62,13 +62,13 @@ export default function Home() {
   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
     <div className="relative">
       <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
-        Expert IT Solutions for
+        Modern Web Solutions for
         <br className="hidden sm:block" />
-        Growing Businesses
+        Small Businesses
       </h1>
 
       <p className="text-xl md:text-2xl text-gray-300 mb-10 max-w-3xl mx-auto">
-        Cybersecurity, Cloud Migration, Custom Software & 24/7 Support
+        Custom, mobile-friendly website and web applications with a focus on security, performance, and reliability. Based in Michigan, serving businesses across the state. 
       </p>
 
       <a
@@ -100,7 +100,7 @@ export default function Home() {
               <div className="text-cyan-400 text-5xl mb-4">🛡️</div> {/* Replace with real icon later */}
               <h3 className="text-xl font-semibold mb-3">Web Applications</h3>
               <p className="text-gray-400">
-                Dynamic and secure data driven web applications built with React, Node.js, and backend APIs with AI integration options.
+                Dynamic and secure data driven web applications for business, and backend APIs with AI integration options.
               </p>
             </div>
 
