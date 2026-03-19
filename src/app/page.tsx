@@ -6,8 +6,8 @@ import Image from "next/image";
 
 
 export const metadata: Metadata = {
-  title: "ToddTech LLC - Expert IT Solutions for Growing Businesses",
-  description: "Cybersecurity, Cloud Migration, Custom Software Development, and 24/7 IT Support for Michigan businesses.",
+  title: "ToddTech LLC - Modern Web Solutions for Small Businesses",
+  description: "Custom, mobile-friendly website and web applications with a focus on security, performance, and reliability. Based in Michigan, serving businesses across the state. ",
 };
 
 export default function Home() {
@@ -62,9 +62,8 @@ export default function Home() {
   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
     <div className="relative">
       <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
-        Modern Web Solutions for
-        <br className="hidden sm:block" />
-        Small Businesses
+        Modern Web Solutions for Small Businesses
+       
       </h1>
 
       <p className="text-xl md:text-2xl text-gray-300 mb-10 max-w-3xl mx-auto">
