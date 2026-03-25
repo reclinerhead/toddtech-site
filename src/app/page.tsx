@@ -7,7 +7,7 @@ import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "ToddTech LLC - Modern Web Solutions for Small Businesses",
-  description: "Custom, mobile-friendly website and web applications with a focus on security, performance, and reliability. Based in Michigan, serving businesses across the state. ",
+  description: "Custom, mobile-friendly websites and web applications with a focus on security, performance, and reliability. Based in Michigan, serving businesses across the state. ",
 };
 
 export default function Home() {
@@ -67,14 +67,14 @@ export default function Home() {
       </h1>
 
       <p className="text-xl md:text-2xl text-gray-300 mb-10 max-w-3xl mx-auto">
-        Custom, mobile-friendly website and web applications with a focus on security, performance, and reliability. Based in Michigan, serving businesses across the state. 
+        Custom, mobile-friendly websites and web applications with a focus on security, performance, and reliability. Based in Michigan, serving businesses across the state. 
       </p>
 
       <a
         href="#contact"
         className="inline-block bg-cyan-500 text-white text-lg font-medium px-10 py-4 rounded-lg hover:bg-cyan-600 transition-colors shadow-lg shadow-cyan-500/20"
       >
-        Get a Free Consultation
+        Contact Us!
       </a>
     </div>
   </div>
@@ -230,3 +230,4 @@ export default function Home() {
     </div>
   );
 }
+
