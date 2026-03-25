@@ -77,6 +77,10 @@ export default function Portfolio() {
               >
                 View Website
               </a>
+
+              <p className="text-gray-500 text-xs mt-3 text-center italic leading-relaxed">
+                Pro-tip - not a real restaurant!
+              </p>
             </div>
           </div>
 
