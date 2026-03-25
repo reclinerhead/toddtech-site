@@ -29,7 +29,7 @@ export default function Portfolio() {
         close={() => setLightboxIndex(-1)}
         slides={slides}
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/50 to-black/70"></div>
+      <div className="absolute inset-0 bg-linear-to-b from-black/20 via-black/50 to-black/70"></div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-12">
           <span className="inline-block text-cyan-400 text-sm font-semibold tracking-widest uppercase mb-4">
@@ -45,7 +45,7 @@ export default function Portfolio() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {/* Portfolio Item 1 */}
           <div className="bg-gray-800/50 border border-gray-700 rounded-xl p-6 hover:border-cyan-500/50 transition-colors flex flex-col">
-            <div className="flex-grow">
+            <div className="grow">
               <div
                 className="relative w-full h-52 rounded-lg mb-4 overflow-hidden cursor-zoom-in"
                 onClick={() => setLightboxIndex(0)}
@@ -68,7 +68,7 @@ export default function Portfolio() {
                 customer review systems.
               </span>
             </div>
-            <div className="flex-shrink-0 mt-6">
+            <div className="shrink-0 mt-6">
               <a
                 href="https://todds-grill-demo.toddtech.llc"
                 target="_blank"
@@ -79,14 +79,14 @@ export default function Portfolio() {
               </a>
 
               <p className="text-gray-500 text-xs mt-3 text-center italic leading-relaxed">
-                Pro-tip - not a real restaurant!
+                Pro-tip: not a real restaurant!
               </p>
             </div>
           </div>
 
           {/* Portfolio Item 2 */}
           <div className="bg-gray-800/50 border border-gray-700 rounded-xl p-6 hover:border-cyan-500/50 transition-colors flex flex-col">
-            <div className="flex-grow">
+            <div className="grow">
               <div
                 className="relative w-full h-52 rounded-lg mb-4 overflow-hidden cursor-zoom-in"
                 onClick={() => setLightboxIndex(1)}
@@ -109,7 +109,7 @@ export default function Portfolio() {
                 coordination.
               </span>
             </div>
-            <div className="flex-shrink-0 mt-6">
+            <div className="shrink-0 mt-6">
               <a
                 href="https://todds-grill-demo.toddtech.llc/manager"
                 target="_blank"
@@ -126,7 +126,7 @@ export default function Portfolio() {
 
           {/* Portfolio Item 3 */}
           <div className="bg-gray-800/50 border border-gray-700 rounded-xl p-6 hover:border-cyan-500/50 transition-colors flex flex-col">
-            <div className="flex-grow">
+            <div className="grow">
               <div
                 className="relative w-full h-52 rounded-lg mb-4 overflow-hidden cursor-zoom-in"
                 onClick={() => setLightboxIndex(2)}
@@ -148,7 +148,7 @@ export default function Portfolio() {
                 Features: 24/7 AI Chat, Review Analysis, Actionable Insights
               </span>
             </div>
-            <div className="flex-shrink-0 mt-6">
+            <div className="shrink-0 mt-6">
               <a
                 href="https://todds-grill-demo.toddtech.llc/manager"
                 target="_blank"
@@ -167,7 +167,7 @@ export default function Portfolio() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pt-8">
           {/* Portfolio Item 1 */}
           <div className="bg-gray-800/50 border border-gray-700 rounded-xl p-6 hover:border-cyan-500/50 transition-colors flex flex-col">
-            <div className="flex-grow">
+            <div className="grow">
               <div
                 className="relative w-full h-52 rounded-lg mb-4 overflow-hidden cursor-zoom-in"
                 onClick={() => setLightboxIndex(3)}
