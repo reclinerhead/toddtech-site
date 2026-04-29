@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@hcaptcha/react-hcaptcha':
-        specifier: ^2.0.2
-        version: 2.0.2
       '@marsidev/react-turnstile':
         specifier: ^1.5.1
         version: 1.5.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -183,9 +180,6 @@ packages:
   '@eslint/plugin-kit@0.4.1':
     resolution: {integrity: sha512-43/qtrDUokr7LJqoF2c3+RInu/t4zfrpYdoSDfYyhg52rwLV6TnOvdG4fXm7IkSB3wErkcmJS9iEhjVtOSEjjA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-
-  '@hcaptcha/react-hcaptcha@2.0.2':
-    resolution: {integrity: sha512-VbuH6VJ6m3BHmVBHs0fL9t+suZd7PQEqCzqL2BiUbBvbHI3XfvSgdiug2QiEPN8zskbPTIV/FfGPF53JCckrow==}
 
   '@humanfs/core@0.19.2':
     resolution: {integrity: sha512-UhXNm+CFMWcbChXywFwkmhqjs3PRCmcSa/hfBgLIb7oQ5HNb1wS0icWsGtSAUNgefHeI+eBrA8I1fxmbHsGdvA==}
@@ -2229,8 +2223,6 @@ snapshots:
     dependencies:
       '@eslint/core': 0.17.0
       levn: 0.4.1
-
-  '@hcaptcha/react-hcaptcha@2.0.2': {}
 
   '@humanfs/core@0.19.2':
     dependencies:
