@@ -1,6 +1,6 @@
-'use server';
+"use server";
 
-import { Resend } from 'resend';
+import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -13,41 +13,51 @@ export async function submitContact(
   prevState: ContactFormState,
   formData: FormData,
 ): Promise<ContactFormState> {
-  const name = formData.get('name')?.toString().trim();
-  const email = formData.get('email')?.toString().trim();
-  const phone = formData.get('phone')?.toString().trim();
-  const message = formData.get('message')?.toString().trim();
-  const captchaToken = formData.get('h-captcha-response')?.toString();
+  const name = formData.get("name")?.toString().trim();
+  const email = formData.get("email")?.toString().trim();
+  const phone = formData.get("phone")?.toString().trim();
+  const message = formData.get("message")?.toString().trim();
+  const captchaToken = formData.get("cf-turnstile-response")?.toString();
 
   if (!name || !email || !message) {
-    return { success: false, error: 'Please fill in all required fields.' };
+    return { success: false, error: "Please fill in all required fields." };
   }
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email)) {
-    return { success: false, error: 'Please enter a valid email address.' };
+    return { success: false, error: "Please enter a valid email address." };
   }
 
   if (!captchaToken) {
-    return { success: false, error: 'Please complete the captcha verification.' };
+    return {
+      success: false,
+      error: "Please complete the captcha verification.",
+    };
   }
 
-  const captchaVerify = await fetch('https://api.hcaptcha.com/siteverify', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams({
-      secret: process.env.HCAPTCHA_SECRET_KEY!,
-      response: captchaToken,
-    }),
-  });
+  const captchaVerify = await fetch(
+    "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({
+        secret: process.env.TURNSTILE_SECRET_KEY!,
+        response: captchaToken,
+      }),
+    },
+  );
 
   const captchaData = (await captchaVerify.json()) as { success: boolean };
   if (!captchaData.success) {
-    return { success: false, error: 'Captcha verification failed. Please try again.' };
+    return {
+      success: false,
+      error: "Captcha verification failed. Please try again.",
+    };
   }
 
-  const toEmail = process.env.CONTACT_EMAIL ?? 'toddwyatt@outlook.com';
-  const fromEmail = process.env.RESEND_FROM_EMAIL ?? 'ToddTech LLC <contact@toddtech.llc>';
+  const toEmail = process.env.CONTACT_EMAIL ?? "toddwyatt@outlook.com";
+  const fromEmail =
+    process.env.RESEND_FROM_EMAIL ?? "ToddTech LLC <noreply@toddtech.llc>";
 
   try {
     await resend.emails.send({
@@ -67,7 +77,7 @@ export async function submitContact(
               <td style="padding: 8px 0; color: #94a3b8;"><strong>Email:</strong></td>
               <td style="padding: 8px 0;"><a href="mailto:${email}" style="color: #22d3ee;">${email}</a></td>
             </tr>
-            ${phone ? `<tr><td style="padding: 8px 0; color: #94a3b8;"><strong>Phone:</strong></td><td style="padding: 8px 0;">${phone}</td></tr>` : ''}
+            ${phone ? `<tr><td style="padding: 8px 0; color: #94a3b8;"><strong>Phone:</strong></td><td style="padding: 8px 0;">${phone}</td></tr>` : ""}
           </table>
           <hr style="border-color: #1e293b; margin: 16px 0;" />
           <p style="color: #94a3b8; margin-bottom: 8px;"><strong>Message:</strong></p>
@@ -78,7 +88,10 @@ export async function submitContact(
 
     return { success: true };
   } catch (err) {
-    console.error('Resend error:', err);
-    return { success: false, error: 'Failed to send your message. Please try again later.' };
+    console.error("Resend error:", err);
+    return {
+      success: false,
+      error: "Failed to send your message. Please try again later.",
+    };
   }
 }
