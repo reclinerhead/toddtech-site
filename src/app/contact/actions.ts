@@ -47,8 +47,12 @@ export async function submitContact(
     },
   );
 
-  const captchaData = (await captchaVerify.json()) as { success: boolean };
+  const captchaData = (await captchaVerify.json()) as {
+    success: boolean;
+    "error-codes"?: string[];
+  };
   if (!captchaData.success) {
+    console.error("Turnstile verification failed:", captchaData["error-codes"]);
     return {
       success: false,
       error: "Captcha verification failed. Please try again.",
