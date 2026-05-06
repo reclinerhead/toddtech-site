@@ -141,45 +141,65 @@ export const projects: Project[] = [
     slug: "echoes",
     title: "Échoes",
     tagline:
-      "Private, invite-only family history portal — AI-augmented vintage photo and document archive.",
+      "A private invite-only family archive with conversational AI search across decades of photos, scanned documents, and family history.",
     description: [
-      "Échoes is a private, invite-only family history portal designed to preserve and explore vintage photos, scanned documents, and family records. It is not a public product — it is built for a single extended family, with strict access controls and a focus on keeping deeply personal material safe while making it actually useful.",
-      "Every uploaded photo is analyzed by Grok vision on arrival: the model estimates the era, describes the setting, identifies likely subjects and visual cues, and reports a confidence score. Those signals power filtering, search, and the visual timeline. People-tagging is augmented by vector embeddings so a search for a relative's nickname, maiden name, or family pet name still surfaces the right photos.",
-      "A RAG-based Family Historian chat is in active development. It draws on the entire archive — photos, captions, documents, and tagged metadata — to answer questions in natural language: who is in this picture, when was this taken, what was happening in the family that year. The goal is for grandkids to be able to ask the archive questions the way they would ask an elder.",
+      "Échoes is a private, invite-only family history portal built for a single extended family. It combines a long-format vintage photo archive with scanned documents — letters, certificates, news clippings, anything the family has saved — into a single searchable, conversational space. Strong RLS and access controls keep deeply personal material safe; the goal is for grandkids to be able to ask the archive what they would have asked an elder.",
+      "Under the hood, Échoes runs a production retrieval stack on Supabase with pgvector. Photos and documents are indexed via hybrid retrieval — pgvector semantic search fused with PostgreSQL full-text search via Reciprocal Rank Fusion. Photo uploads flow through a multi-stage AI pipeline: client-side MediaPipe face detection (478-point mesh per face), then xAI Grok vision for scene description, era estimation, identity cues, and condition. OpenAI embeddings are then computed at the per-person-instance level so a face's similarity ranks against every other appearance of that person in the archive — useful when a relative looks dramatically different across decades. Scanned documents go through a vision-based OCR pipeline with SSN redaction enforcement and chunk-level embeddings.",
+      "The headline feature is the Family Historian — a streaming, citation-grounded RAG chat that answers natural-language questions across the entire archive. Queries are first classified for intent and structured filters (people, date range, location, document type), then routed through hybrid retrieval, then synthesized with multi-turn memory and inline citations back to source photos and documents. A document-scoped variant lets you ask questions about an open document with that document's chunks loaded into context.",
     ],
     thumbnail: echoesThumbnail,
     screenshots: [echoesThumbnail],
-    tags: ["Next.js", "Supabase", "xAI / Grok", "OpenAI", "Anthropic"],
+    tags: ["Next.js", "Supabase", "pgvector", "xAI / Grok", "OpenAI"],
     techStack: [
       "Next.js 16",
       "TypeScript",
       "Supabase",
-      "xAI / Grok (vision)",
-      "OpenAI (embeddings)",
-      "Anthropic (Claude)",
+      "pgvector",
+      "Vercel AI SDK",
+      "xAI / Grok",
+      "OpenAI embeddings",
+      "MediaPipe",
       "Tailwind CSS",
     ],
     aiIntegrations: [
       {
+        name: "Family Historian RAG chat",
+        provider: "xAI / Grok",
+        description:
+          "Streaming, citation-grounded conversational search across the entire archive. Query intent is classified, hybrid retrieval runs, results are synthesized with multi-turn memory and inline source citations. A document-scoped mode answers questions about an open document with its chunks loaded into context.",
+      },
+      {
         name: "Photo vision analysis",
         provider: "xAI / Grok",
         description:
-          "Each uploaded photo is analyzed on arrival — era estimation, scene description, identifiable subjects, and a per-field confidence score that drives filtering and search.",
+          "Each uploaded photo is analyzed for scene description, estimated era, suggested date, setting, condition, mood, visible text, color/BW classification, and per-person identity cues. Returns structured JSON that feeds metadata, search, and the people pipeline.",
       },
       {
-        name: "Vector embeddings for people tagging",
-        provider: "OpenAI",
+        name: "Document OCR pipeline",
+        provider: "xAI / Grok (vision)",
         description:
-          "Embeddings make people search robust to maiden names, nicknames, and informal family references. A search for one form of a name surfaces photos tagged with any of them.",
+          "Scanned pages and PDFs are OCR'd via vision, chunked, and embedded for retrieval. Includes SSN redaction enforcement that blocks uploads containing detected social security numbers.",
       },
       {
-        name: "RAG-based Family Historian chat",
-        provider: "Anthropic",
+        name: "Hybrid retrieval",
+        provider: "pgvector + PostgreSQL FTS",
         description:
-          "In development. A chat over the entire archive — photos, captions, documents, metadata — that answers questions in natural language. Built so a grandchild can ask the archive what they would have asked an elder.",
+          "Semantic vector search fused with full-text search via Reciprocal Rank Fusion (RRF), scoped per asset type (photos, documents, people). Supports filter pushdown for date range, location, and document subtype.",
+      },
+      {
+        name: "Per-instance person embeddings",
+        provider: "OpenAI text-embedding-3-small",
+        description:
+          "Every detected person in every photo gets its own 1536-dim embedding. Similarity is ranked with Bayesian shrinkage and a gender filter so a face can be matched across decades despite appearance changes.",
+      },
+      {
+        name: "Query intent classification",
+        provider: "xAI / Grok",
+        description:
+          "Natural-language queries are classified (asset_lookup / semantic / structured / combined) and parsed for entities — people with alias resolution, dates, locations. The classification gates which retrieval strategy runs, keeping latency low for simple lookups while giving the historian what it needs for synthesis questions.",
       },
     ],
-    status: "in-development",
+    status: "live",
     order: 3,
   },
 ];
