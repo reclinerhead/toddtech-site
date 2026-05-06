@@ -74,39 +74,29 @@ function ProjectCard({ project }: { project: Project }) {
       </div>
 
       <div className="shrink-0 mt-6 space-y-2">
-        {project.liveUrl ? (
-          <>
-            <a
-              href={project.liveUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 px-6 py-3 bg-gray-800/50 border border-cyan-500/50 rounded-xl hover:border-cyan-400 hover:bg-cyan-500/20 transition-all font-semibold text-cyan-300 hover:text-cyan-100 text-sm"
-            >
-              <ExternalLink className="w-4 h-4 shrink-0" />
-              {project.liveUrlLabel ?? "View Live Demo"}
-            </a>
-            <Link
-              href={detailHref}
-              className="flex items-center justify-center gap-1.5 text-gray-400 hover:text-cyan-300 transition-colors text-xs"
-            >
-              View project details
-              <ArrowRight className="w-3 h-3" />
-            </Link>
-          </>
-        ) : (
-          <Link
-            href={detailHref}
-            className="flex items-center justify-center gap-2 px-6 py-3 bg-gray-800/50 border border-cyan-500/50 rounded-xl hover:border-cyan-400 hover:bg-cyan-500/20 transition-all font-semibold text-cyan-300 hover:text-cyan-100 text-sm"
-          >
-            View project details
-            <ArrowRight className="w-4 h-4 shrink-0" />
-          </Link>
-        )}
-        {project.liveUrl && project.liveUrlNote && (
+        {project.liveUrlNote && (
           <p className="text-gray-600 text-xs text-center italic">
             {project.liveUrlNote}
           </p>
         )}
+        {project.liveUrl && (
+          <a
+            href={project.liveUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center gap-2 px-6 py-3 bg-gray-800/50 border border-cyan-500/50 rounded-xl hover:border-cyan-400 hover:bg-cyan-500/20 transition-all font-semibold text-cyan-300 hover:text-cyan-100 text-sm"
+          >
+            <ExternalLink className="w-4 h-4 shrink-0" />
+            {project.liveUrlLabel ?? "View Live Demo"}
+          </a>
+        )}
+        <Link
+          href={detailHref}
+          className="flex items-center justify-center gap-2 px-6 py-3 bg-gray-800/50 border border-cyan-500/50 rounded-xl hover:border-cyan-400 hover:bg-cyan-500/20 transition-all font-semibold text-cyan-300 hover:text-cyan-100 text-sm"
+        >
+          View project details
+          <ArrowRight className="w-4 h-4 shrink-0" />
+        </Link>
       </div>
     </div>
   );
