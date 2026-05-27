@@ -11,6 +11,8 @@ import {
 import { SiteNav } from "@/app/components/SiteNav";
 import { Tag } from "@/app/components/Tag";
 import { ProjectGallery } from "@/app/components/ProjectGallery";
+import { ProjectGalleryGrid } from "@/app/components/ProjectGalleryGrid";
+import { HeroScreenshot } from "@/app/components/HeroScreenshot";
 
 interface RouteParams {
   params: Promise<{ slug: string }>;
@@ -111,9 +113,20 @@ export default async function PortfolioDetailPage({ params }: RouteParams) {
             {project.title}
           </h1>
 
-          <p className="text-xl text-gray-300 leading-relaxed max-w-3xl mb-10">
-            {project.tagline}
-          </p>
+          {project.heroImage ? (
+            <>
+              <div className="mb-10">
+                <HeroScreenshot screenshot={project.heroImage} />
+              </div>
+              <p className="text-2xl md:text-3xl text-gray-200 leading-relaxed max-w-3xl mb-10 font-light">
+                {project.tagline}
+              </p>
+            </>
+          ) : (
+            <p className="text-xl text-gray-300 leading-relaxed max-w-3xl mb-10">
+              {project.tagline}
+            </p>
+          )}
 
           {(project.liveUrl || project.repoUrl) && (
             <div className="flex flex-wrap gap-3">
@@ -155,10 +168,12 @@ export default async function PortfolioDetailPage({ params }: RouteParams) {
         <div className="h-px bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent" />
       </div>
 
-      {/* ── Gallery ── */}
-      <section className="py-16 lg:py-20">
-        <ProjectGallery screenshots={project.screenshots} />
-      </section>
+      {/* ── Gallery (strip layout — only when no hero image) ── */}
+      {!project.heroImage && (
+        <section className="py-16 lg:py-20">
+          <ProjectGallery screenshots={project.screenshots} />
+        </section>
+      )}
 
       {/* ── Overview ── */}
       <section className="py-16 lg:py-20">
@@ -173,6 +188,45 @@ export default async function PortfolioDetailPage({ params }: RouteParams) {
           </div>
         </div>
       </section>
+
+      {/* ── Gallery (captioned grid — only when hero image is present) ── */}
+      {project.heroImage && project.screenshots.length > 0 && (
+        <section className="py-16 lg:py-20">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-10">
+            <span className="inline-block text-cyan-400 text-xs font-semibold tracking-[0.2em] uppercase mb-3">
+              Inside the app
+            </span>
+            <h2 className="font-display text-2xl md:text-3xl font-bold tracking-tight text-white">
+              Screenshot gallery
+            </h2>
+          </div>
+          <ProjectGalleryGrid screenshots={project.screenshots} />
+        </section>
+      )}
+
+      {/* ── Selected Design Decisions ── */}
+      {project.designDecisions && project.designDecisions.length > 0 && (
+        <section className="py-16 lg:py-20">
+          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <span className="inline-block text-cyan-400 text-xs font-semibold tracking-[0.2em] uppercase mb-3">
+              How it was built
+            </span>
+            <h2 className="font-display text-2xl md:text-3xl font-bold tracking-tight mb-8 text-white">
+              Selected Design Decisions
+            </h2>
+            <div className="space-y-6 text-gray-300 leading-relaxed">
+              {project.designDecisions.map((dd, i) => (
+                <p key={i}>
+                  <strong className="text-white font-semibold">
+                    {dd.title}
+                  </strong>{" "}
+                  {dd.body}
+                </p>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* ── AI Integrations ── */}
       {project.aiIntegrations && project.aiIntegrations.length > 0 && (
