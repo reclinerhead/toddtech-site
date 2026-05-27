@@ -119,7 +119,7 @@ export const projects: Project[] = [
     liveUrlLabel: "View Live Demo",
     liveUrlNote: "Not a real restaurant — all AI features are live",
     status: "live",
-    order: 1,
+    order: 3,
   },
   {
     slug: "lcp2",
@@ -150,7 +150,7 @@ export const projects: Project[] = [
       },
     ],
     status: "coming-soon",
-    order: 2,
+    order: 4,
   },
   {
     slug: "echoes",
@@ -215,7 +215,7 @@ export const projects: Project[] = [
       },
     ],
     status: "live",
-    order: 3,
+    order: 2,
   },
   {
     slug: "hearth",
@@ -296,10 +296,10 @@ export const projects: Project[] = [
       },
       {
         src: "/images/hearth/08-task-detail.png",
-        alt: "Hearth task detail showing source, cadence basis, habitat-driven adjustments, and anchor date",
-        title: "Task detail",
+        alt: "Hearth task detail showing a dishwasher cleaning task with hard-water habitat modifier tightening the cadence to monthly",
+        title: "Task detail with cross-module reasoning",
         caption:
-          "Every task is one tap away from “why this task” — the source of the recommendation, the cadence basis, any habitat-driven adjustments, and the document or installation date the schedule is anchored to. Marking a task complete closes that row and chains a successor with the correct next-due date.",
+          "Every task is one tap away from “why this task.” This dishwasher cleaning task's cadence was tightened from the standard 1-2 month range to monthly because the water quality module detected hard water in the user's county — a finding that flowed into the maintenance synthesis pipeline as a habitat modifier. The card surfaces the adjustment, the source, and the locality in plain language, so the user understands why their schedule is what it is.",
         width: 1600,
         height: 1000,
       },
@@ -376,7 +376,7 @@ export const projects: Project[] = [
       },
     ],
     status: "live",
-    order: 4,
+    order: 1,
   },
 ];
 
