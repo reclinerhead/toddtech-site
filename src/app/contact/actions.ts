@@ -4,6 +4,22 @@ import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+const MAX = {
+  name: 200,
+  email: 320,
+  phone: 30,
+  message: 5000,
+} as const;
+
+function esc(s: string) {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 export type ContactFormState = {
   success: boolean;
   error?: string;
@@ -21,6 +37,18 @@ export async function submitContact(
 
   if (!name || !email || !message) {
     return { success: false, error: "Please fill in all required fields." };
+  }
+
+  if (
+    name.length > MAX.name ||
+    email.length > MAX.email ||
+    (phone && phone.length > MAX.phone) ||
+    message.length > MAX.message
+  ) {
+    return {
+      success: false,
+      error: "One or more fields exceed the maximum allowed length.",
+    };
   }
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -59,9 +87,23 @@ export async function submitContact(
     };
   }
 
-  const toEmail = process.env.CONTACT_EMAIL ?? "toddwyatt@outlook.com";
+  const toEmail = process.env.CONTACT_EMAIL;
+  if (!toEmail) {
+    console.error("CONTACT_EMAIL env var is not set");
+    return {
+      success: false,
+      error:
+        "We can't send your message right now due to a server configuration issue. Please try again later.",
+    };
+  }
   const fromEmail =
     process.env.RESEND_FROM_EMAIL ?? "ToddTech LLC <noreply@toddtech.llc>";
+
+  const safeName = esc(name);
+  const safeEmail = esc(email);
+  const safePhone = phone ? esc(phone) : "";
+  const safeMessage = esc(message);
+  const mailtoHref = `mailto:${encodeURIComponent(email)}`;
 
   try {
     await resend.emails.send({
@@ -75,17 +117,17 @@ export async function submitContact(
           <table style="width: 100%; border-collapse: collapse;">
             <tr>
               <td style="padding: 8px 0; color: #94a3b8; width: 100px;"><strong>Name:</strong></td>
-              <td style="padding: 8px 0;">${name}</td>
+              <td style="padding: 8px 0;">${safeName}</td>
             </tr>
             <tr>
               <td style="padding: 8px 0; color: #94a3b8;"><strong>Email:</strong></td>
-              <td style="padding: 8px 0;"><a href="mailto:${email}" style="color: #22d3ee;">${email}</a></td>
+              <td style="padding: 8px 0;"><a href="${mailtoHref}" style="color: #22d3ee;">${safeEmail}</a></td>
             </tr>
-            ${phone ? `<tr><td style="padding: 8px 0; color: #94a3b8;"><strong>Phone:</strong></td><td style="padding: 8px 0;">${phone}</td></tr>` : ""}
+            ${safePhone ? `<tr><td style="padding: 8px 0; color: #94a3b8;"><strong>Phone:</strong></td><td style="padding: 8px 0;">${safePhone}</td></tr>` : ""}
           </table>
           <hr style="border-color: #1e293b; margin: 16px 0;" />
           <p style="color: #94a3b8; margin-bottom: 8px;"><strong>Message:</strong></p>
-          <p style="white-space: pre-wrap; background: #1e293b; padding: 16px; border-radius: 6px; border-left: 3px solid #22d3ee;">${message}</p>
+          <p style="white-space: pre-wrap; background: #1e293b; padding: 16px; border-radius: 6px; border-left: 3px solid #22d3ee;">${safeMessage}</p>
         </div>
       `,
     });
