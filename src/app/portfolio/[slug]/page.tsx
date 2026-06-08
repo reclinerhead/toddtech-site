@@ -175,6 +175,20 @@ export default async function PortfolioDetailPage({ params }: RouteParams) {
         </section>
       )}
 
+      {/* ── Tech Stack ── */}
+      <section className="py-16 lg:py-20">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="font-display text-2xl md:text-3xl font-bold tracking-tight mb-6 text-white">
+            Tech Stack
+          </h2>
+          <div className="flex flex-wrap gap-2">
+            {project.techStack.map((t) => (
+              <Tag key={t} label={t} />
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── Overview ── */}
       <section className="py-16 lg:py-20">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -263,20 +277,6 @@ export default async function PortfolioDetailPage({ params }: RouteParams) {
           </div>
         </section>
       )}
-
-      {/* ── Tech Stack ── */}
-      <section className="py-16 lg:py-20">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="font-display text-2xl md:text-3xl font-bold tracking-tight mb-6 text-white">
-            Tech Stack
-          </h2>
-          <div className="flex flex-wrap gap-2">
-            {project.techStack.map((t) => (
-              <Tag key={t} label={t} />
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* ── Prev / Next nav ── */}
       <section className="py-12 border-t border-white/5">
