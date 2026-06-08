@@ -427,7 +427,8 @@ export const projects: Project[] = [
         body: "Hearth's durable jobs run on Vercel Workflows, where a naive policy retries every failure as if it were transient. Hearth instead marks its orchestrator-internal errors as non-retryable: constraint violations, missing entities, a failed write. Those surface a deterministic bug in about two seconds rather than grinding through roughly thirty seconds of pointless retries, while genuinely transient errors like a flaky EPA call or a gateway hiccup still retry. That one distinction turns the workflow layer into a fast feedback loop during development instead of a latency tax.",
       },
       {
-        title: "Data shared across homes is ingested once and cached for everyone.",
+        title:
+          "Data shared across homes is ingested once and cached for everyone.",
         body: "Some facts aren't per-house. A water utility publishes one annual quality report, and it's identical for every home on that system. Rather than ingest and summarize it once per user, Hearth keys the report by utility and year and serves a single cached row to every house the utility covers. The same pattern fits any data shared across entities, and it saves redundant ingestion, duplicate LLM cost, and needless load on slow government APIs.",
       },
       {
@@ -462,9 +463,9 @@ export const projects: Project[] = [
       },
       {
         name: "Habitat data integration",
-        provider: "Mapbox + EPA + FEMA + Zillow",
+        provider: "Mapbox + EPA + FEMA",
         description:
-          "Address autofill via Mapbox feeds coordinates into a set of public-data lookups: EPA Envirofacts SEMS for Superfund sites, FEMA NFHL for flood zones, EPA's CWS service-area layer for drinking-water utilities, and SDWIS for compliance and lead/copper samples. A one-time Zillow fetch at onboarding seeds the home's core facts. Per-state shared caches spread the cost of slow EPA calls across every user in the same area.",
+          "Address autofill via Mapbox feeds coordinates into a set of public-data lookups: EPA Envirofacts SEMS for Superfund sites, FEMA NFHL for flood zones, EPA's CWS service-area layer for drinking-water utilities, and SDWIS for compliance and lead/copper samples. Per-state shared caches spread the cost of slow EPA calls across every user in the same area.",
       },
       {
         name: "Activity logs and methodology transparency",
