@@ -45,10 +45,10 @@ export interface Project {
 }
 
 const aviaryHero: Screenshot = {
-  src: "/images/aviary/hero-dashboard.png",
-  alt: "The Aviary dashboard: life list, live arrivals ticker, and new-arrival cards (placeholder)",
-  width: 1600,
-  height: 1000,
+  src: "/images/aviary/0-hero.png",
+  alt: "The Aviary dashboard: life list, live arrivals ticker, and new-arrival cards",
+  width: 1507,
+  height: 973,
 };
 
 const echoesThumbnail: Screenshot = {
@@ -84,52 +84,52 @@ export const projects: Project[] = [
     screenshots: [
       {
         src: "/images/aviary/01-life-list.png",
-        alt: "The Aviary life list: a grid of species tiles with portraits and visit counts (placeholder)",
+        alt: "The Aviary life list: a grid of species tiles with portraits and visit counts",
         title: "The life list",
         caption:
           "Every species the yard has ever announced, one tile each, with portraits, visit counts, search, and sort. Counts tick live as detections arrive over MQTT, and new lifers append without reshuffling the grid, because the UI's standing rule is that nothing on the page ever moves under the reader's eyes.",
-        width: 1600,
-        height: 1000,
+        width: 1124,
+        height: 778,
       },
       {
         src: "/images/aviary/02-live-ticker.png",
-        alt: "The live arrivals ticker with inline audio clip playback (placeholder)",
+        alt: "The live arrivals ticker with inline audio clip playback",
         title: "Latest events",
         caption:
           "The live arrivals ticker: each row is a visit opening, with species, confidence, source microphone, and an inline player for the ~9-second clip. Playback routes through a WebAudio gain-and-limiter graph because real yard birds are often faint, and the clip server speaks RFC 7233 byte ranges because without them iOS Safari refuses to play audio at all, a lesson learned the hard way on a real phone.",
-        width: 1600,
-        height: 1000,
+        width: 357,
+        height: 414,
       },
       {
         src: "/images/aviary/03-species-profile.png",
-        alt: "A species profile page with portrait, standings, and a pannable visits chart (placeholder)",
+        alt: "A species profile page with portrait, standings, and a pannable visits chart",
         title: "A species profile",
         caption:
           "Each species gets a magazine-style page: Wikipedia portrait and description, standings against the rest of the yard, and a visits chart that pans back through the whole record, with daily bars for how often and an hourly curve for when in the day. The curve is a monotone (Fritsch–Carlson) spline so sparse counts can never draw an impossible −2 visits at 3 a.m.",
-        width: 1600,
-        height: 1000,
+        width: 1497,
+        height: 973,
       },
       {
         src: "/images/aviary/04-field-notes.png",
-        alt: "The field journal spread: AI-written notes with margin figures drawn from stored statistics (placeholder)",
+        alt: "The field journal spread: AI-written notes with margin figures drawn from stored statistics",
         title: "The field journal",
         caption:
           "Two pages of AI-written field notes per species, one on the bird's daily rhythm and one on how weather moves its odds, rendered as a journal spread with margin figures drawn from the stored statistics: a 24-hour activity strip and weather-effect pills. The numbers come from joining detections against the yard's own weather record (an on-site Ecowitt station at home, OpenWeatherMap at stations without one), and the locally hosted LLM only narrates the precomputed figures, so the figures and the prose can never disagree.",
-        width: 1600,
-        height: 1000,
+        width: 1499,
+        height: 888,
       },
       {
         src: "/images/aviary/05-events-archive.png",
-        alt: "The full detection record with sticky day headers and species filter pills (placeholder)",
+        alt: "The full detection record with sticky day headers and species filter pills",
         title: "The full record",
         caption:
           "The browsable archive: infinite scroll under sticky day headers, combinable species filter pills, jump-to-date, and shareable filtered URLs. All of it reads from the same append-only SQLite store the listener writes; the web tier never writes the bird record.",
-        width: 1600,
-        height: 1000,
+        width: 1511,
+        height: 1060,
       },
       {
         src: "/images/aviary/06-station-birdhouse.png",
-        alt: "A family station's dashboard: the same app running at a relative's house (placeholder)",
+        alt: "A family station: a stylized card for the station at my mom's house, whose dashboard matches the life list above",
         title: "A family station",
         caption:
           "The same codebase in its station role at my mom's house: one env file of local facts, its own broker, database, and dashboard, and a masthead that says whose yard it is. It updates itself when I merge to main (a systemd watcher pulls and restarts), and it has run unattended on a fanless mini PC and a clip-on mic since early August.",
