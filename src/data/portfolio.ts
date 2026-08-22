@@ -44,18 +44,11 @@ export interface Project {
   order: number;
 }
 
-const toddsGrillThumbnail: Screenshot = {
-  src: "/images/portfolio_TT_1.png",
-  alt: "Todd's Grill & Bait — public restaurant site",
-  width: 1586,
-  height: 1120,
-};
-
-const lcp2Thumbnail: Screenshot = {
-  src: "/images/portfolio_TT_4.png",
-  alt: "Little Computer People 2 — pixel dollhouse interior",
-  width: 1551,
-  height: 1037,
+const aviaryHero: Screenshot = {
+  src: "/images/aviary/hero-dashboard.png",
+  alt: "The Aviary dashboard — life list, live arrivals ticker, and new-arrival cards (placeholder)",
+  width: 1600,
+  height: 1000,
 };
 
 const echoesThumbnail: Screenshot = {
@@ -74,83 +67,161 @@ const hearthHero: Screenshot = {
 
 export const projects: Project[] = [
   {
-    slug: "todds-grill",
-    title: "Todd's Grill & Bait",
+    slug: "aviary",
+    title: "The Aviary",
     tagline:
-      "A full-stack restaurant demo with live AI throughout — dual-persona chat, real-time review analysis, and tone-based reply generation.",
+      "Always-on acoustic bird identification at the edge — a fleet of family monitoring stations, one riding security-camera audio and one on a budget lavalier mic, feeding a living life list with AI-written field notes.",
     description: [
-      "A complete restaurant web application built to showcase practical, customer-facing AI integration. The public site handles everything a small restaurant needs — menu, hours, location, reservations, and a review wall — while a separate manager dashboard exposes the operational side: review moderation, reply drafting, and analytics. The demo intentionally bypasses authentication so visitors can explore both sides freely; every AI feature remains fully live and connected to real models.",
-      "The customer-facing chat runs two distinct personas. Todd is a folksy storyteller who leans into restaurant lore; Karen is the efficient manager who answers logistical questions cleanly. The model itself decides which persona should respond to a given question — and occasionally both chime in. The personas share context but maintain independent voices, demonstrating how character-driven AI can make a small business feel a lot bigger.",
-      "When a customer submits a review, three independent AI calls fire in parallel: sentiment scoring, abuse and toxicity detection, and actionable-item extraction. The manager then sees the review pre-classified and can generate a reply in any of five tones (Friendly, Professional, Humorous, Apologetic, or Promotional). The whole pipeline runs through the Vercel AI SDK against Grok, with results streaming back to the dashboard in seconds.",
+      "The Aviary is the public face of a wildlife-monitoring platform that listens to the yard around the clock. An always-on listener service pulls live audio from outdoor microphones, runs Cornell's BirdNET classifier on every 3-second window, and files each accepted detection into an append-only bird record: a life list of every species ever heard (its first-heard moment and first recording preserved forever), one curated audio clip per visit, and the visit history behind them. The Aviary web app presents that record as something a family actually wants to open — a life-list grid of species tiles, a live ticker of arrivals with inline clip playback, and per-species profile pages with portraits, visit-rhythm charts, and AI-written field notes.",
+      "It runs as a small fleet, and the stations are deliberately different experiments in deployment. The home station bought no hardware at all: it pulls the audio track alone from the property's existing security cameras over RTSP — none of the 4K video's bandwidth. My mom's station proves the budget floor: a clip-on lavalier mic in a window and a fanless mini PC whose Celeron can't even import stock TensorFlow (no AVX instructions), so the pipeline runs on LiteRT instead — same model, 27× real-time throughput. That station has been in production at her house, unattended, since early August 2026 — three weeks and counting. A third station, for my aunt, is being built now: three yards reporting into one family hobby.",
+      "Between the microphone and the record sits a pipeline shaped by measurement rather than guesswork. An ambient-sound classifier (YAMNet) screens every window before BirdNET sees it: a window of human speech produces no event and no clip, by construction — the privacy invariant a system that listens 24/7 has to be able to prove. BirdNET's geographic model filters candidates to species actually plausible at that latitude in that week of the year; the local weather station raises the confidence threshold when wind makes audio evidence weaker; and a species-level debounce collapses one singing cardinal — 25 raw detections on day one — into a single visit whose clip silently upgrades itself whenever a better recording of the same visit arrives.",
+      "The web application is a Next.js App Router frontend over SQLite, hydrating from read-only API routes and then merging live detections over MQTT — a bird landing in the yard appears on the page within seconds, clip and all. Enrichment passes dress each new species automatically: a Wikipedia portrait and profile, clips made audible by a homegrown NumPy DSP chain (noise-profiled from each clip's own lead-in seconds), and field notes written by a locally hosted LLM. The notes follow a strict rule — every statistic is computed in Python and stored beside the prose, and the model only narrates the numbers — so nothing on the page can be a hallucinated figure.",
+      "Coming soon: the community layer. With three stations reporting, the roadmap turns the fleet into a friendly competition — cross-station leaderboards for the most diverse species roster, the best bald-eagle recording, the first hummingbird of spring. The pieces it needs (per-station rosters, per-species best-clip curation, station identity) are already running; the game goes live once station three is stable.",
     ],
-    thumbnail: toddsGrillThumbnail,
-    screenshots: [toddsGrillThumbnail],
-    tags: ["Next.js", "Supabase", "Vercel AI SDK", "xAI / Grok"],
+    thumbnail: aviaryHero,
+    heroImage: aviaryHero,
+    screenshots: [
+      {
+        src: "/images/aviary/01-life-list.png",
+        alt: "The Aviary life list — a grid of species tiles with portraits and visit counts (placeholder)",
+        title: "The life list",
+        caption:
+          "Every species the yard has ever announced, one tile each, with portraits, visit counts, search, and sort. Counts tick live as detections arrive over MQTT, and new lifers append without reshuffling the grid — the UI's standing rule is that nothing on the page ever moves under the reader's eyes.",
+        width: 1600,
+        height: 1000,
+      },
+      {
+        src: "/images/aviary/02-live-ticker.png",
+        alt: "The live arrivals ticker with inline audio clip playback (placeholder)",
+        title: "Latest events",
+        caption:
+          "The live arrivals ticker: each row is a visit opening, with species, confidence, source microphone, and an inline player for the ~9-second clip. Playback routes through a WebAudio gain-and-limiter graph because real yard birds are often faint, and the clip server speaks RFC 7233 byte ranges because without them iOS Safari refuses to play audio at all — found the hard way, on a real phone.",
+        width: 1600,
+        height: 1000,
+      },
+      {
+        src: "/images/aviary/03-species-profile.png",
+        alt: "A species profile page with portrait, standings, and a pannable visits chart (placeholder)",
+        title: "A species profile",
+        caption:
+          "Each species gets a magazine-style page: Wikipedia portrait and description, standings against the rest of the yard, and a visits chart that pans back through the whole record — daily bars for how often, an hourly curve for when in the day. The curve is a monotone (Fritsch–Carlson) spline so sparse counts can never draw an impossible −2 visits at 3 a.m.",
+        width: 1600,
+        height: 1000,
+      },
+      {
+        src: "/images/aviary/04-field-notes.png",
+        alt: "The field journal spread — AI-written notes with margin figures drawn from stored statistics (placeholder)",
+        title: "The field journal",
+        caption:
+          "Two pages of AI-written field notes per species — the bird's daily rhythm, and how weather moves its odds — rendered as a journal spread with margin figures. The statistics are computed in Python first (exposure-normalized, so \"40% of visits were cloudy\" can't mislead when 40% of the hours were cloudy) and the locally hosted LLM only narrates them; the raw stats are stored beside the prose, so every sentence is auditable.",
+        width: 1600,
+        height: 1000,
+      },
+      {
+        src: "/images/aviary/05-events-archive.png",
+        alt: "The full detection record with sticky day headers and species filter pills (placeholder)",
+        title: "The full record",
+        caption:
+          "The browsable archive: infinite scroll under sticky day headers, combinable species filter pills, jump-to-date, and shareable filtered URLs. All of it reads from the same append-only SQLite store the listener writes — the web tier never writes the bird record.",
+        width: 1600,
+        height: 1000,
+      },
+      {
+        src: "/images/aviary/06-station-birdhouse.png",
+        alt: "A family station's dashboard — the same app running at a relative's house (placeholder)",
+        title: "A family station",
+        caption:
+          "The same codebase in its station role at my mom's house: one env file of local facts, its own broker, database, and dashboard, and a masthead that says whose yard it is. It updates itself when I merge to main — a systemd watcher pulls and restarts — and it has run unattended on a fanless mini PC and a clip-on mic since early August.",
+        width: 1600,
+        height: 1000,
+      },
+    ],
+    tags: ["Edge ML", "BirdNET", "Python", "Next.js", "MQTT"],
     techStack: [
-      "Next.js 16",
+      "Python",
+      "BirdNET (Cornell Lab)",
+      "YAMNet",
+      "LiteRT",
+      "NumPy DSP",
+      "FFmpeg",
+      "MQTT (Mosquitto)",
+      "SQLite",
+      "Next.js (App Router)",
       "TypeScript",
-      "Supabase",
-      "Vercel AI SDK",
-      "xAI / Grok",
       "Tailwind CSS",
-      "Vercel",
+      "Ollama (local LLM)",
+      "systemd / Ubuntu",
+      "Tailscale",
+      "pytest / Vitest",
+    ],
+    designDecisions: [
+      {
+        title: "Speech is never recorded — enforced by a model, not a policy.",
+        body: "A system that listens to a family's yard 24/7 has to answer the obvious question. Every 3-second window meets an ambient-sound classifier before the bird model ever sees it, and a window whose top label is human speech produces no event and no clip — by construction, in code under test, not as a configurable setting. BirdNET's own human-voice detection remains as a second layer behind it.",
+      },
+      {
+        title:
+          "The statistics are computed in Python; the LLM only narrates them.",
+        body: "Hand any model raw event rows and ask for the pattern, and it invents percentages — invisibly. So every figure the field notes may speak is computed first (exposure-normalized visit rates against the species' own baseline, with confound controls for dawn hours and wind), stored as JSON beside the generated prose, and the model's only job is turning audited facts into two charming paragraphs. Auditing output against the stored stats caught the model inverting a direction and hedging from boilerplate — both fixed in the prompt, not by reaching for a bigger model.",
+      },
+      {
+        title: "The best sensor is the one already installed.",
+        body: "The home station pulls the audio track alone off the property's security cameras over RTSP — the cameras were already aimed at the yard, already powered, already networked. The station at my mom's proves the opposite end: a budget lavalier mic and the smallest PC that works. Audio sources live in a config registry keyed by kind, not by name, so adding a camera or retiring a mic is a data edit, not a code change.",
+      },
+      {
+        title: "Merging to main is the deploy.",
+        body: "Every box in the fleet — home servers and remote stations alike — runs a systemd watcher that polls main over a read-only deploy key, fast-forward pulls, and restarts that box's services; a dirty checkout is skipped loudly, never clobbered. Combined with a Tailscale mesh for remote observability, that is what makes a station at a relative's house three weeks of unattended production instead of a support burden.",
+      },
+      {
+        title: "One singing cardinal is one visit, not 25 rows.",
+        body: "Day one measured 3.2× event redundancy and a disk burn 10× the estimate — one persistent cardinal produced 25 events, rows, and clips. The fix is a species-level debounce: a visit opens on the first detection and publishes immediately (consumers hear the arrival in seconds), later windows are suppressed, and the visit's clip is quietly rewritten in place whenever a clearer window beats the best so far. Retention has the same shape: clips age out under a disk budget, but every species' first-ever recording is exempt forever — a first-heard moment is the one thing no API sells back.",
+      },
+      {
+        title: "Constrained hardware is part of the problem statement.",
+        body: "The mini PC at my mom's crashes on a stock TensorFlow import — its Celeron lacks AVX instructions. Rather than buy different hardware, the pipeline gained a LiteRT arm behind a one-function seam: the same models on ai-edge-litert, selected by one environment variable, measured at 27× real-time throughput. Nothing upstream changed, and either arm failing to load runs the listener degraded and loud, never silently dead.",
+      },
     ],
     aiIntegrations: [
       {
-        name: "Dual-persona AI chat",
-        provider: "xAI / Grok",
+        name: "BirdNET acoustic identification",
+        provider: "Cornell Lab / BirdNET",
         description:
-          "Two distinct personas — Todd (folksy storyteller) and Karen (efficient manager) — share context but maintain independent voices. The model decides for itself which persona should answer; sometimes both do.",
+          "Runs on every 3-second window at 48 kHz, continuously, per microphone. BirdNET's geographic model masks candidates to species plausible at the station's coordinates in the current week of the year — in testing, false positives without region filtering scored 0.25–0.61 while true locals scored 0.89+, so the mask plus a threshold between those bands does most of the work.",
       },
       {
-        name: "Parallel review intelligence",
-        provider: "Vercel AI SDK + xAI / Grok",
+        name: "YAMNet ambient screen",
+        provider: "Google / YAMNet",
         description:
-          "Every submitted review triggers three simultaneous AI calls — sentiment scoring, abuse/toxicity detection, and actionable-item extraction — so the manager sees pre-classified, ready-to-act feedback the moment it lands.",
+          "A 521-class AudioSet classifier hears every window first: speech kills the window outright (the privacy invariant), notable non-bird sounds (dog, siren, thunder, cricket) become their own species-less events for the live ticker, and every non-speech window still goes to BirdNET — a barking dog doesn't mean no bird is singing.",
       },
       {
-        name: "Multi-tone reply generation",
-        provider: "xAI / Grok",
+        name: "LiteRT edge inference",
+        provider: "Google / LiteRT",
         description:
-          "Managers generate review replies in five tones (Friendly, Professional, Humorous, Apologetic, Promotional) with one click, then edit and post.",
+          "Both classifiers run on ai-edge-litert on station hardware whose CPU can't import stock TensorFlow (no AVX). Selected by one env var behind a one-function seam; the home hub keeps full TensorFlow, and a failed load degrades loudly, never silently.",
+      },
+      {
+        name: "Field notes from a local LLM",
+        provider: "Ollama (self-hosted)",
+        description:
+          "Per-species prose — the bird's daily rhythm, weather effects on its visits — generated by a locally hosted model narrating Python-computed, exposure-normalized statistics stored beside the text. Free to run, so notes regenerate as a bird's record grows; worklist-driven on a visit-count watermark like every other enrichment pass.",
+      },
+      {
+        name: "Clip enhancement DSP",
+        provider: "NumPy (in-house)",
+        description:
+          "Makes faint birds audible: band-limit below songbird range, spectral subtraction using the clip's own lead-in seconds as a perfectly matched noise profile, then normalize — in that order, because normalizing first would normalize the airplane. Pure NumPy, covered by tests against synthesized signals.",
+      },
+      {
+        name: "Wikipedia enrichment passes",
+        provider: "Wikipedia API",
+        description:
+          "New species are dressed automatically: a portrait with CC attribution, the article lead, and a vocalization section mined by a claim-about-sound sentence reader — the reference text a human uses to double-check the model's identification. Every pass is idempotent and worklist-driven, so a new lifer is fully dressed minutes after first contact.",
       },
     ],
-    liveUrl: "https://todds-grill-demo.toddtech.llc",
-    liveUrlLabel: "View Live Demo",
-    liveUrlNote: "Not a real restaurant — all AI features are live",
+    liveUrlNote: "Runs privately on the family's own network — no public demo",
     status: "live",
-    order: 3,
-  },
-  {
-    slug: "lcp2",
-    title: "Little Computer People 2",
-    tagline:
-      "A cozy reimagining of the 1985 life-sim classic — an AI-driven resident lives inside a charming pixel dollhouse.",
-    description: [
-      "Little Computer People 2: The House Writes Back is a love letter to the 1985 Activision original. A single AI-driven resident lives inside a hand-drawn pixel dollhouse, going about their day, sleeping in their bed, working at their desk, and reacting to the player's small interventions. The goal isn't to play a game so much as to build a relationship with someone who happens to live inside your computer.",
-      "Each night the resident writes a diary entry reflecting on the day — what made them happy, what they wished had gone differently, what they hope for tomorrow. They also occasionally send letters: small notes that surface in your inbox between sessions, addressed to you. These artifacts accumulate over time into a record of a life lived alongside yours.",
-      "The personality engine is the central trick. The resident's traits drift based on how you treat them — neglect breeds melancholy, attention breeds warmth, surprises breed delight or anxiety depending on context. The same character can become wildly different over weeks of play, and the diary entries reflect that change in tone, vocabulary, and what they choose to write about at all.",
-    ],
-    thumbnail: lcp2Thumbnail,
-    screenshots: [lcp2Thumbnail],
-    tags: ["Next.js", "xAI / Grok", "TypeScript"],
-    techStack: ["Next.js 16", "TypeScript", "xAI / Grok", "Tailwind CSS"],
-    aiIntegrations: [
-      {
-        name: "AI-driven resident persona",
-        provider: "xAI / Grok",
-        description:
-          "A single coherent character with persistent personality state. Behavior, dialogue, and reactions all flow from one model maintaining the resident's evolving identity across sessions.",
-      },
-      {
-        name: "Generative narrative artifacts",
-        provider: "xAI / Grok",
-        description:
-          "Nightly diary entries and occasional letters from the resident. Both reflect the resident's current emotional state and accumulate into a long-form record of the relationship between player and character.",
-      },
-    ],
-    status: "coming-soon",
-    order: 4,
+    order: 1,
   },
   {
     slug: "echoes",
@@ -282,7 +353,7 @@ export const projects: Project[] = [
       },
     ],
     status: "live",
-    order: 2,
+    order: 3,
   },
   {
     slug: "hearth",
@@ -475,7 +546,7 @@ export const projects: Project[] = [
       },
     ],
     status: "live",
-    order: 1,
+    order: 2,
   },
 ];
 
