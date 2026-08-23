@@ -231,11 +231,13 @@ export const projects: Project[] = [
     slug: "echoes",
     title: "Échoes",
     tagline:
-      "A private invite-only family archive with conversational AI search across decades of photos, scanned documents, and family history.",
+      "A private invite-only family archive with conversational AI search across decades of photos and documents, plus a multi-hop Family Researcher agent that follows the trail from one record to the next.",
     description: [
       "Échoes is a private, invite-only family history portal built for a single extended family. It brings a large vintage photo archive together with the documents a family gathers over the years, from letters and certificates to news clippings, all in one searchable, conversational space. Strong RLS and access controls keep deeply personal material safe, so the grandkids can ask the archive what they would once have asked an elder.",
       "Échoes runs a production retrieval stack on Supabase with pgvector. Photos and documents are indexed for hybrid retrieval, fusing pgvector semantic search with PostgreSQL full-text search through Reciprocal Rank Fusion. Photo uploads move through a multi-stage AI pipeline: InsightFace (SCRFD, ONNX) detects faces server-side, MediaPipe maps a 478-point landmark mesh per face in the browser, and xAI Grok vision then describes the scene, estimates the era, and notes condition and identity cues. OpenAI embeddings are computed at the per-person-instance level, so a face ranks against every other appearance of that same person in the archive. That matters when a relative looks dramatically different from one decade to the next. Scanned documents take a separate path: vision-based OCR, SSN redaction enforcement, and chunk-level embeddings.",
-      "Its centerpiece is the Family Historian, a streaming RAG chat that answers natural-language questions across the entire archive and grounds every answer in citations. A query is first classified for intent and structured filters such as people, date range, location, and document type. It then runs through hybrid retrieval and is synthesized with multi-turn memory, with inline citations pointing back to the source photos and documents. A document-scoped variant narrows that same chat to a single open document, loading its chunks into context so you can interrogate just that page.",
+      "The everyday interface is the Family Historian, a streaming RAG chat that answers natural-language questions across the entire archive and grounds every answer in citations. A query is first classified for intent and structured filters such as people, date range, location, and document type. It then runs through hybrid retrieval and is synthesized with multi-turn memory, with inline citations pointing back to the source photos and documents. A document-scoped variant narrows that same chat to a single open document, loading its chunks into context so you can interrogate just that page.",
+      "Beside it sits the Family Researcher, built for the questions a single search cannot answer. The Historian retrieves once against the question you typed. The Researcher is a bounded multi-hop agent: it plans, searches the archive, looks people up, walks the family graph, and searches again from what it just learned, streaming a live “Following the trail” narration so you can watch it work. A question like “who does Bertha’s obituary mention that we don’t have on record?” is the kind of thing it exists for. The evidence lives across letters, obituaries, and the relationship graph, and no one document matches the question on its own.",
+      "The agent is deliberately read-only. Four tools do the hunting: the same hybrid corpus search the Historian uses, person lookup with fuzzy and batched name matching, a one-hop relatives query, and a graph-computed kinship path so “great-great-grandfather” is a fact from the tree rather than a count the model might get wrong. After it answers, a separate reconciliation pass compares what the documents named against what the graph already records and proposes the missing people and relationships. A family member reviews, edits, and confirms each row; only then does a deterministic write path commit anything. Agent proposes, human approves, code writes. When the first pass is not enough, a “Think harder” button re-runs the same question on a deeper reasoning model (Claude Opus) instead of padding the prompt.",
     ],
     thumbnail: echoesThumbnail,
     heroImage: echoesThumbnail,
@@ -299,24 +301,49 @@ export const projects: Project[] = [
         alt: "Échoes family relationship graph laid out by generation, from great-grandparents down to the children's generation",
         title: "The family graph",
         caption:
-          "The whole family rendered as a generational graph that runs from the great-grandparents down to the children's generation. Each person is a node, linked to the others by parent, sibling, spouse, and step-relationships. This same relationship data feeds the Historian, which is why a question like “who served in the war?” can reason about how people are related rather than only who happens to appear in a photo.",
+          "The whole family rendered as a generational graph that runs from the great-grandparents down to the children's generation. Each person is a node, linked to the others by parent, sibling, spouse, and step-relationships. This same graph is what the Family Researcher reads, and what it can write after a family member reviews the proposal. Kinship questions return a computed degree and an ordered chain. People a document names who are not on the tree yet surface as additions to confirm, rather than as a silent gap.",
         width: 910,
         height: 717,
       },
     ],
-    tags: ["Next.js", "Supabase", "pgvector", "xAI / Grok", "OpenAI"],
+    tags: ["Next.js", "Supabase", "pgvector", "Agents", "xAI / Grok"],
     techStack: [
       "Next.js 16",
       "TypeScript",
       "Supabase",
       "pgvector",
       "Vercel AI SDK",
+      "Vercel AI Gateway",
       "xAI / Grok",
+      "Anthropic / Claude Opus",
       "OpenAI embeddings",
       "InsightFace (SCRFD)",
       "ONNX Runtime",
       "MediaPipe",
+      "Tiptap",
       "Tailwind CSS",
+    ],
+    designDecisions: [
+      {
+        title: "The agent never writes the family tree.",
+        body: "The Researcher loop is read-only by construction. Anything that would change the graph goes through a deterministic reconciliation pass after the answer, then a review modal where a family member confirms, edits, or rejects each proposed person and relationship, with duplicates defaulting to “link to existing.” A fifth “propose additions” tool was tried first. The model reliably skipped it, because writing the answer is the turn that ends the loop, and it would even claim in prose that it had prepared a card it never produced. So proposing is no longer the model's to decide. Agent proposes, human approves, code writes.",
+      },
+      {
+        title: "The Historian retrieves once. The Researcher loops.",
+        body: "Same hybrid retrieval stack, different intelligence. The Historian classifies intent and searches once. The Researcher is a bounded, handwritten agent loop (not the SDK's auto-stepper) so every turn is observable: it streams a live “Following the trail” narration, persists the full trace with hop and token metrics, and stops at a hard hop cap rather than wandering. The corpus-search tool reuses the existing retriever unchanged and bypasses the intent classifier; the agent is the intelligence that classifier approximated, and it composes the next query from what the last hop found.",
+      },
+      {
+        title: "Kinship is computed from the graph, not counted by the model.",
+        body: "“How is X related to Y?” used to burn hops walking relatives generation by generation, and the model would miscount the “greats.” A dedicated tool runs a two-person BFS over confirmed edges and returns the degree plus the ordered chain of people that links them. The prompt tells the model to state that degree verbatim. A disconnected result is an honest “no recorded link,” not a cue to invent one.",
+      },
+      {
+        title: "A tagged name is an ID, not a spelling.",
+        body: "Typing @ in the ask box opens the family roster. Selecting a person inserts a pill bound to their id, so “which Loren?” is resolved before the first hop. The model receives those ids on the seeded question and skips name lookup for tagged people; a hop saved, and no disambiguation lottery. Untagged questions behave exactly as they did before.",
+      },
+      {
+        title: "Think harder is a second model, not a longer prompt.",
+        body: "After a standard run on Grok, a family member can re-run the exact same question through Claude Opus. The button is hidden unless a distinct advanced model is configured, so it never silently re-runs the same model and pretends to be deeper. Model identity is env-driven through the Vercel AI Gateway; swapping the pairing is a config change, never a code change.",
+      },
     ],
     aiIntegrations: [
       {
@@ -324,6 +351,18 @@ export const projects: Project[] = [
         provider: "xAI / Grok",
         description:
           "Streaming, citation-grounded conversational search across the entire archive. Query intent is classified, hybrid retrieval runs, results are synthesized with multi-turn memory and inline source citations. A document-scoped mode answers questions about an open document with its chunks loaded into context.",
+      },
+      {
+        name: "Family Researcher agent",
+        provider: "xAI / Grok + Anthropic / Claude Opus",
+        description:
+          "A handwritten multi-hop agent loop with four read tools: hybrid corpus search, person lookup (fuzzy, batched, nickname-aware), immediate relatives, and graph-computed kinship. It streams a live trail of each hop, persists the full trace, and can re-run the same question on Claude Opus via “Think harder.” The loop never writes; a hard hop cap forces a conclusion from whatever it found.",
+      },
+      {
+        name: "Graph reconciliation",
+        provider: "In-house (structured output)",
+        description:
+          "After a graph-touching run, a deterministic generateObject pass names people and relationships the documents support that the tree is missing. Candidates are deduped against existing people, sibling intents auto-wire into primitive edges, and already-recorded links are dropped. A family member reviews the proposal row by row; only confirmed rows commit, stamped researcher-origin.",
       },
       {
         name: "Photo vision analysis",
