@@ -93,7 +93,7 @@ export async function submitContact(
     return {
       success: false,
       error:
-        "We can't send your message right now due to a server configuration issue. Please try again later.",
+        "Your message can't be sent right now due to a server configuration issue. Please try again later.",
     };
   }
   const fromEmail =

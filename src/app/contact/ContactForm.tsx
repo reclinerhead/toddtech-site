@@ -30,7 +30,7 @@ export function ContactForm() {
         <div className="text-cyan-400 text-5xl mb-4">✓</div>
         <h3 className="text-2xl font-bold text-white mb-3">Message Sent!</h3>
         <p className="text-gray-400 max-w-md mx-auto">
-          Thanks for reaching out. We&apos;ll get back to you within one
+          Thanks for reaching out. I&apos;ll get back to you within one
           business day.
         </p>
       </div>
@@ -89,14 +89,14 @@ export function ContactForm() {
 
       <div>
         <label htmlFor="message" className={labelClass}>
-          How can we help? <span className="text-cyan-400">*</span>
+          How can I help? <span className="text-cyan-400">*</span>
         </label>
         <textarea
           id="message"
           name="message"
           rows={5}
           required
-          placeholder="Tell us about your IT needs, current challenges, or what you're looking to achieve..."
+          placeholder="Tell me about your business, current challenges, or what you're looking to achieve..."
           className={`${inputClass} resize-none`}
         />
       </div>

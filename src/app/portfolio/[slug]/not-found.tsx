@@ -15,8 +15,8 @@ export default function NotFound() {
             Project not found
           </h1>
           <p className="text-gray-400 mb-10 leading-relaxed">
-            We couldn&apos;t find a portfolio project at this URL. It may have
-            been moved or renamed.
+            There&apos;s no portfolio project at this URL. It may have been
+            moved or renamed.
           </p>
           <Link
             href="/#portfolio"

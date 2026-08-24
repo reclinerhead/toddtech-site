@@ -21,12 +21,11 @@ const spaceMono = Space_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default:
-      "ToddTech LLC — Full-Stack Web Development & AI Integrations, Kalamazoo MI",
+    default: "ToddTech LLC - Applied AI Systems for Michigan Businesses",
     template: "%s | ToddTech LLC",
   },
   description:
-    "Senior full-stack developer in Kalamazoo, MI. Custom websites, web applications, and AI integrations for small businesses. 20+ years of experience building on the web.",
+    "Practical AI for small and mid-size businesses: document assistants, paperwork automation, and smart monitoring, built and deployed by a Kalamazoo engineer with four AI systems in production. Veteran-owned. Security+ certified.",
   openGraph: {
     siteName: "ToddTech LLC",
     locale: "en_US",
