@@ -110,14 +110,15 @@ export default function Portfolio() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <span className="inline-block text-cyan-400 text-sm font-semibold tracking-widest uppercase mb-4">
-            Our Work
+            My Work
           </span>
           <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
             Portfolio
           </h2>
           <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-            Real projects, live demos. Click any card to dig into the AI
-            integrations behind it.
+            These aren&apos;t demos or mockups. Every system below is running in
+            production right now, and each page explains what it does, how it
+            was built, and the design decisions behind it.
           </p>
         </div>
 
