@@ -31,7 +31,7 @@ const stations: Station[] = [
     chip: "Live · hub",
     body: (
       <>
-        <strong className="font-extrabold">Two ears:</strong> front and rear
+        <strong className="font-extrabold">Two ears:</strong>{" "}front and rear
         security-camera audio over RTSP &mdash; zero new hardware, and the two
         yards hear different birds. Into a Lenovo M920x bought cheap on eBay,
         minimal Ubuntu.
@@ -44,7 +44,7 @@ const stations: Station[] = [
     chip: "Live · since 8/6",
     body: (
       <>
-        <strong className="font-extrabold">One ear:</strong> a clip-on lavalier
+        <strong className="font-extrabold">One ear:</strong>{" "}a clip-on lavalier
         mic in a window. Into a Dell Wyse 5070 thin client on minimal Ubuntu
         &mdash; no AVX, so LiteRT at 27&times; real time.
       </>
@@ -360,7 +360,7 @@ export function AviarySystemDiagram() {
               home boxes track main, and the family stations ride a stable
               release branch promoted nightly by a GitHub Action, at most a
               day of changes at a time.{" "}
-              <strong className="font-extrabold">Tailscale</strong> ties the
+              <strong className="font-extrabold">Tailscale</strong>{" "}ties the
               three yards into one private mesh &mdash; how a station in
               someone else&apos;s house gets maintained, with no ports opened
               and no visit.
