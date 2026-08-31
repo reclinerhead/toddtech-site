@@ -13,6 +13,7 @@ import { Tag } from "@/app/components/Tag";
 import { ProjectGallery } from "@/app/components/ProjectGallery";
 import { ProjectGalleryGrid } from "@/app/components/ProjectGalleryGrid";
 import { HeroScreenshot } from "@/app/components/HeroScreenshot";
+import { AviarySystemDiagram } from "@/app/components/AviarySystemDiagram";
 
 interface RouteParams {
   params: Promise<{ slug: string }>;
@@ -167,6 +168,15 @@ export default async function PortfolioDetailPage({ params }: RouteParams) {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="h-px bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent" />
       </div>
+
+      {/* ── System diagram (Aviary only) ── */}
+      {project.slug === "aviary" && (
+        <section className="py-16 lg:py-20" aria-label="System architecture">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <AviarySystemDiagram />
+          </div>
+        </section>
+      )}
 
       {/* ── Gallery (strip layout — only when no hero image) ── */}
       {!project.heroImage && (
