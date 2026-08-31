@@ -354,10 +354,12 @@ export function AviarySystemDiagram() {
             </div>
             <div className="text-[13.5px] mt-1.5">
               <strong className="font-extrabold">
-                Merging to main is the deploy.
+                The fleet deploys itself.
               </strong>{" "}
-              A systemd watcher on every box fast-forward pulls and restarts; a
-              dirty checkout is skipped loudly.{" "}
+              A systemd watcher on every box fast-forward pulls and restarts:
+              home boxes track main, and the family stations ride a stable
+              release branch promoted nightly by a GitHub Action, at most a
+              day of changes at a time.{" "}
               <strong className="font-extrabold">Tailscale</strong> ties the
               three yards into one private mesh &mdash; how a station in
               someone else&apos;s house gets maintained, with no ports opened

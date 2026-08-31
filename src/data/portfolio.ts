@@ -128,7 +128,7 @@ export const projects: Project[] = [
         alt: "A family station: a stylized card for the station at my mom's house, whose dashboard matches the life list above",
         title: "A family station",
         caption:
-          "The same codebase in its station role at my mom's house: one env file of local facts, its own broker, database, and dashboard, and a masthead that says whose yard it is. It updates itself when I merge to main (a systemd watcher pulls and restarts), and it has run unattended on a fanless mini PC and a clip-on mic since early August.",
+          "The same codebase in its station role at my mom's house: one env file of local facts, its own broker, database, and dashboard, and a masthead that says whose yard it is. It updates itself from a stable release branch promoted nightly (a systemd watcher pulls and restarts), and it has run unattended on a fanless mini PC and a clip-on mic since early August.",
         width: 1600,
         height: 1000,
       },
