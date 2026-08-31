@@ -70,14 +70,10 @@ export const projects: Project[] = [
     slug: "aviary",
     title: "The Aviary",
     tagline:
-      "Always-on acoustic bird identification at the edge: a fleet of family monitoring stations, one riding security-camera audio and one on a budget lavalier mic, feeding a living life list with AI-written field notes.",
+      "Always-on acoustic bird identification at the edge: three family monitoring stations, one riding security-camera audio and two on budget lavalier mics, each feeding a living life list with AI-written field notes.",
     description: [
       "The Aviary is the public face of a wildlife-monitoring platform that listens to the yard around the clock. An always-on listener service pulls live audio from outdoor microphones, runs Cornell's BirdNET classifier on every 3-second window, and files each accepted detection into an append-only bird record: a life list of every species ever heard (its first-heard moment and first recording preserved forever), one curated audio clip per visit, and the visit history behind them. The Aviary web app presents that record as something a family actually wants to open: a life-list grid of species tiles, a live ticker of arrivals with inline clip playback, and per-species profile pages with portraits, visit-rhythm charts, and AI-written field notes.",
-      "It runs as a small fleet, and the stations are deliberately different experiments in deployment. The home station bought no hardware at all: it pulls the audio track alone from the property's existing security cameras over RTSP, taking none of the 4K video's bandwidth. My mom's station proves the budget floor with a clip-on lavalier mic in a window and a fanless mini PC whose Celeron can't even import stock TensorFlow (no AVX instructions), so the pipeline runs on LiteRT instead, same model, still 27 times faster than real time. That station has been in production at her house, unattended, since early August 2026, three weeks and counting. A third station, for my aunt, is being built now: three yards reporting into one family hobby.",
-      "Between the microphone and the record sits a pipeline shaped by measurement rather than guesswork. An ambient-sound classifier (YAMNet) screens every window before BirdNET sees it, and a window of human speech produces no event and no clip, by construction. That is the privacy invariant a system that listens 24/7 has to be able to prove. BirdNET's geographic model filters candidates to species actually plausible at that latitude in that week of the year; the local weather station raises the confidence threshold when wind makes audio evidence weaker; and a species-level debounce collapses one singing cardinal (25 raw detections on day one) into a single visit whose clip silently upgrades itself whenever a better recording of the same visit arrives.",
-      "The web application is a Next.js App Router frontend over SQLite, hydrating from read-only API routes and then merging live detections over MQTT, so a bird landing in the yard appears on the page within seconds, clip and all. Enrichment passes dress each new species automatically: a Wikipedia portrait and profile, clips made audible by a homegrown NumPy DSP chain (noise-profiled from each clip's own lead-in seconds), and per-species field notes written by a locally hosted LLM.",
-      "The field notes are the feature I'm proudest of. Each species gets two short essays, one on its daily rhythm and one on how weather moves its odds, built by joining every detection against time of day and the yard's own weather record. At home that record comes from an Ecowitt weather station on the property, logging wind, temperature, and rainfall every five minutes; my mom's station has no weather hardware, so the same pipeline reads OpenWeatherMap there instead. Hyperlocal truth where it exists, a clean fallback where it doesn't. The statistics keep themselves honest: every claim is an exposure-normalized rate ('shows up more in rain' only counts against how many rainy hours there actually were), computed inside each species' own active hours so a dawn effect can't masquerade as a weather effect, and the on-site rain sensor outranks the weather API when the two disagree about whether it's raining. Every figure is computed in Python and stored beside the prose; the LLM only narrates the numbers, so nothing on the page can be a hallucinated statistic.",
-      "Coming soon: the community layer. With three stations reporting, the roadmap turns the fleet into a friendly competition, with cross-station leaderboards for the most diverse species roster, the best bald-eagle recording, the first hummingbird of spring. The pieces it needs (per-station rosters, per-species best-clip curation, station identity) are already running; the game goes live once station three is stable.",
+      "The field notes are the feature I'm proudest of. Each species gets two short essays, one on its daily rhythm and one on how weather moves its odds, built by joining every detection against time of day and the yard's own weather record. At home that record comes from an Ecowitt weather station on the property, logging wind, temperature, and rainfall every five minutes; stations without weather hardware read OpenWeatherMap instead. Hyperlocal truth where it exists, a clean fallback where it doesn't. The statistics keep themselves honest: every claim is an exposure-normalized rate ('shows up more in rain' only counts against how many rainy hours there actually were), computed inside each species' own active hours so a dawn effect can't masquerade as a weather effect, and the on-site rain sensor outranks the weather API when the two disagree about whether it's raining.",
     ],
     thumbnail: aviaryHero,
     heroImage: aviaryHero,
@@ -160,67 +156,12 @@ export const projects: Project[] = [
     designDecisions: [
       {
         title:
-          "Speech is never recorded, and a model enforces that, not a policy.",
-        body: "A system that listens to a family's yard 24/7 has to answer the obvious question. Every 3-second window meets an ambient-sound classifier before the bird model ever sees it, and a window whose top label is human speech produces no event and no clip, by construction, in code under test, never as a configurable setting. BirdNET's own human-voice detection remains as a second layer behind it.",
-      },
-      {
-        title:
           "The statistics are computed in Python; the LLM only narrates them.",
         body: "Hand any model raw event rows and ask for the pattern, and it invents percentages, invisibly. So every figure the field notes may speak is computed first (exposure-normalized visit rates against the species' own baseline, with confound controls for dawn hours and wind), stored as JSON beside the generated prose, and the model's only job is turning audited facts into two charming paragraphs. Auditing output against the stored stats caught the model inverting a direction and hedging from boilerplate; both were fixed in the prompt rather than by reaching for a bigger model.",
       },
       {
         title: "The best sensor is the one already installed.",
         body: "The home station pulls the audio track alone off the property's security cameras over RTSP; the cameras were already aimed at the yard, already powered, already networked. The station at my mom's proves the opposite end: a budget lavalier mic and the smallest PC that works. Audio sources live in a config registry keyed by kind, not by name, so adding a camera or retiring a mic is a data edit rather than a code change.",
-      },
-      {
-        title: "Merging to main is the deploy.",
-        body: "Every box in the fleet, home servers and remote stations alike, runs a systemd watcher that polls main over a read-only deploy key, fast-forward pulls, and restarts that box's services; a dirty checkout is skipped loudly, never clobbered. Combined with a Tailscale mesh for remote observability, that is what makes a station at a relative's house three weeks of unattended production instead of a support burden.",
-      },
-      {
-        title: "One singing cardinal is one visit, not 25 rows.",
-        body: "Day one measured 3.2× event redundancy and a disk burn 10× the estimate, with one persistent cardinal producing 25 events, rows, and clips. The fix is a species-level debounce: a visit opens on the first detection and publishes immediately (consumers hear the arrival in seconds), later windows are suppressed, and the visit's clip is quietly rewritten in place whenever a clearer window beats the best so far. Retention has the same shape: clips age out under a disk budget, but every species' first-ever recording is exempt forever, because a first-heard moment is the one thing no API sells back.",
-      },
-      {
-        title: "Constrained hardware is part of the problem statement.",
-        body: "The mini PC at my mom's crashes on a stock TensorFlow import, because its Celeron lacks AVX instructions. Rather than buy different hardware, the pipeline gained a LiteRT arm behind a one-function seam: the same models on ai-edge-litert, selected by one environment variable, measured at 27× real-time throughput. Nothing upstream changed, and either arm failing to load runs the listener degraded and loud, never silently dead.",
-      },
-    ],
-    aiIntegrations: [
-      {
-        name: "BirdNET acoustic identification",
-        provider: "Cornell Lab / BirdNET",
-        description:
-          "Runs on every 3-second window at 48 kHz, continuously, per microphone. BirdNET's geographic model masks candidates to species plausible at the station's coordinates in the current week of the year. In testing, false positives without region filtering scored 0.25–0.61 while true locals scored 0.89+, so the mask plus a threshold between those bands does most of the work.",
-      },
-      {
-        name: "YAMNet ambient screen",
-        provider: "Google / YAMNet",
-        description:
-          "A 521-class AudioSet classifier hears every window first: speech kills the window outright (the privacy invariant), notable non-bird sounds (dog, siren, thunder, cricket) become their own species-less events for the live ticker, and every non-speech window still goes to BirdNET, because a barking dog doesn't mean no bird is singing.",
-      },
-      {
-        name: "LiteRT edge inference",
-        provider: "Google / LiteRT",
-        description:
-          "Both classifiers run on ai-edge-litert on station hardware whose CPU can't import stock TensorFlow (no AVX). Selected by one env var behind a one-function seam; the home hub keeps full TensorFlow, and a failed load is loud, never silent.",
-      },
-      {
-        name: "Field notes from a local LLM",
-        provider: "Ollama (self-hosted)",
-        description:
-          "Per-species prose on the bird's daily rhythm and how weather moves its visits, generated by a locally hosted model narrating Python-computed, exposure-normalized statistics drawn from the yard's own weather record (Ecowitt at home, OpenWeatherMap at stations without one) and stored beside the text. Free to run, so notes regenerate as a bird's record grows; worklist-driven on a visit-count watermark like every other enrichment pass.",
-      },
-      {
-        name: "Clip enhancement DSP",
-        provider: "NumPy (in-house)",
-        description:
-          "Makes faint birds audible: band-limit below songbird range, spectral subtraction using the clip's own lead-in seconds as a perfectly matched noise profile, then normalize, in that order, because normalizing first would normalize the airplane. Pure NumPy, covered by tests against synthesized signals.",
-      },
-      {
-        name: "Wikipedia enrichment passes",
-        provider: "Wikipedia API",
-        description:
-          "New species are dressed automatically: a portrait with CC attribution, the article lead, and a vocalization section mined by a claim-about-sound sentence reader, which is the reference text a human uses to double-check the model's identification. Every pass is idempotent and worklist-driven, so a new lifer is fully dressed minutes after first contact.",
       },
     ],
     liveUrlNote: "Runs privately on the family's own network; no public demo",
