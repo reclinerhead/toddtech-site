@@ -341,11 +341,11 @@ export default async function PortfolioDetailPage({ params }: RouteParams) {
       <section className="py-20">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="font-display text-2xl md:text-3xl font-bold tracking-tight mb-4">
-            Have a project in mind?
+            Want to talk about this work?
           </h2>
           <p className="text-gray-400 mb-8">
-            Let&apos;s talk about what AI-powered web tools could do for your
-            business.
+            I&apos;m available for contract and full-time roles, and happy to
+            walk through any of these systems in detail.
           </p>
           <Link
             href="/#contact"
