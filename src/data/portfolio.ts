@@ -467,44 +467,8 @@ export const projects: Project[] = [
         body: "Hearth's durable jobs run on Vercel Workflows, where a naive policy retries every failure as if it were transient. Hearth instead marks its orchestrator-internal errors as non-retryable: constraint violations, missing entities, a failed write. Those surface a deterministic bug in about two seconds rather than grinding through roughly thirty seconds of pointless retries, while genuinely transient errors like a flaky EPA call or a gateway hiccup still retry. That one distinction turns the workflow layer into a fast feedback loop during development instead of a latency tax.",
       },
     ],
-    aiIntegrations: [
-      {
-        name: "Vision extraction pipeline",
-        provider: "Anthropic / Claude Haiku",
-        description:
-          "A multi-mode vision pipeline reads appliance nameplates, multi-page service receipts, and identifying documents, with Claude Haiku chosen for fast, low-cost structured extraction. Output is bound by Zod schemas; prompt-leak prevention is enforced with unit tests that pin the no-leak contract.",
-      },
-      {
-        name: "Research this model",
-        provider: "Perplexity / Sonar",
-        description:
-          "A streaming, web-grounded summary of an appliance's service life, maintenance needs, and known issues, researched with Perplexity Sonar and routed through the Vercel AI Gateway. It renders section by section, headline first, then overview, service life, and maintenance, so the reader has real content within seconds instead of waiting on a full response.",
-      },
-      {
-        name: "Serial-number decode",
-        provider: "Reasoning model (env-driven)",
-        description:
-          "A parallel call on a reasoning model decodes manufacture dates from serial numbers when no install date is on file. Strict “name-the-rule, apply, verify, return null on uncertainty” protocol prevents hallucinated dates. Only high-confidence decodes are persisted.",
-      },
-      {
-        name: "Maintenance synthesis workflow",
-        provider: "Vercel Workflow SDK",
-        description:
-          "A durable background workflow pairs a direct-from-documents extraction pipeline with an LLM synthesis pipeline, drawing on the appliance's research summary, the home's habitat findings, and any attached service receipts to emit a structured maintenance plan. Results persist to an append-only event log with per-task reasoning stored as JSONB; each task carries its own cadence, anchor, and modifiers.",
-      },
-      {
-        name: "Habitat data integration",
-        provider: "Mapbox + EPA + FEMA",
-        description:
-          "Address autofill via Mapbox feeds coordinates into a set of public-data lookups: EPA Envirofacts SEMS for Superfund sites, FEMA NFHL for flood zones, EPA's CWS service-area layer for drinking-water utilities, and SDWIS for compliance and lead/copper samples. Per-state shared caches spread the cost of slow EPA calls across every user in the same area.",
-      },
-      {
-        name: "Activity logs and methodology transparency",
-        provider: "In-house",
-        description:
-          "Every habitat finding emits a step-by-step activity log narrating what was queried, what came back, what rule was applied, and how severity was decided. Every classification rule is published on an in-app methodology page so users can see how Hearth thinks.",
-      },
-    ],
+    // No AI Integrations grid either: the diagram's pipeline, habitat modules,
+    // and rule banner already name every model call and what constrains it.
     status: "live",
     order: 2,
   },
