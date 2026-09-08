@@ -23,7 +23,15 @@ export function HeroScreenshot({ screenshot }: HeroScreenshotProps) {
         style={{ boxShadow: "0 30px 80px -30px rgba(8,145,178,0.45)" }}
         aria-label={`Open ${screenshot.alt} in lightbox`}
       >
-        <div className="relative aspect-[16/10] w-full">
+        {/* The frame takes the image's own ratio, so nothing gets cropped —
+            hero art is not all 16:10, and object-cover was silently shaving
+            the edges off anything wider. */}
+        <div
+          className="relative w-full"
+          style={{
+            aspectRatio: `${screenshot.width} / ${screenshot.height}`,
+          }}
+        >
           <Image
             src={screenshot.src}
             alt={screenshot.alt}

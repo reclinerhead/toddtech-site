@@ -28,7 +28,8 @@ export interface Project {
   slug: string;
   title: string;
   tagline: string;
-  description: string[];
+  /** Overview paragraphs. Omitted on projects whose system diagram tells the story. */
+  description?: string[];
   thumbnail: Screenshot;
   heroImage?: Screenshot;
   screenshots: Screenshot[];
@@ -59,10 +60,10 @@ const echoesThumbnail: Screenshot = {
 };
 
 const hearthHero: Screenshot = {
-  src: "/images/hearth/hero-dashboard.png",
-  alt: "Hearth dashboard showing a property's home facts, generated illustration, and habitat findings",
-  width: 1600,
-  height: 1000,
+  src: "/images/hearth/hero-home.jpg",
+  alt: "An illustrated house overlaid with Hearth callout cards: home facts, air and water quality, ground risk, and the furnace, water heater, washer, and dishwasher with model, age, and next maintenance",
+  width: 1872,
+  height: 1056,
 };
 
 export const projects: Project[] = [
@@ -344,12 +345,8 @@ export const projects: Project[] = [
     title: "Hearth",
     tagline:
       "The user manual your house never came with. Hearth turns photos, documents, and public records into the maintenance plan, inventory record, and historical archive your home has never had.",
-    description: [
-      "Hearth is a personal home-management platform built on one observation: every house carries thousands of small facts, and almost none of them are written down anywhere the homeowner can find when it counts. What year was the furnace installed? When was the roof last replaced? What is the radon zone, and where is the main water shutoff? Hearth gathers those answers in one place, takes in new information through photo and document uploads, and works out what the home needs and when.",
-      "Behind the dashboard, Hearth runs a multi-pipeline AI architecture on a tightly RLS-scoped Supabase backend. One vision pipeline reads appliance nameplates, service receipts, and identifying documents and pulls out structured data. A separate reasoning-model pipeline decodes manufacture dates from serial numbers when no install date is on file. A streaming “Research this model” call produces grounded summaries of an appliance's service life, maintenance needs, and known issues. Finally, a maintenance-synthesis workflow combines those summaries with the home's environmental context to emit a real, scheduled plan in which every task carries its own reasoning.",
-      "The habitat surface is where Hearth turns public records into something a homeowner can act on. Working from the home's coordinates, it queries EPA radon zones, FEMA flood maps, EPA Superfund proximity, and EPA drinking-water compliance and lead/copper sample data, then writes the results up in plain language. Each finding shows its severity, the actions it recommends, and an activity log of exactly how it was computed. Hearth even gives its methodology its own page in the app, on the principle that a homeowner should be able to check the work.",
-      "Hearth is in active development and currently deployed for real-world use. A public beta and a premium tier are on the near-term roadmap.",
-    ],
+    // No Overview section: the system diagram under the hero carries the
+    // architecture, and the screenshots below carry the rest.
     thumbnail: hearthHero,
     heroImage: hearthHero,
     screenshots: [
@@ -358,7 +355,7 @@ export const projects: Project[] = [
         alt: "Hearth dashboard with AI-generated architectural sketch, home facts, emergency video panel, and habitat findings preview",
         title: "Dashboard",
         caption:
-          "The home view: an AI-generated architectural sketch of the property, the home's facts pulled from public records, an emergency video reference panel, and a live habitat findings preview. Everything on this page is rendered from real data, updated in real time via Supabase Realtime as background workflows complete.",
+          "The home view: an AI-generated architectural sketch of the property, the facts pulled from public records, an emergency video reference panel, and a live preview of the habitat findings. Every tile is real data, updating as background workflows finish.",
         width: 1600,
         height: 1000,
       },
@@ -367,7 +364,7 @@ export const projects: Project[] = [
         alt: "Hearth onboarding screen narrating live public-records lookups and habitat checks",
         title: "Onboarding discovery",
         caption:
-          "The first-run experience narrates what Hearth is doing as it does it: looking up public records, then checking radon, Superfund proximity, flood zones, and water quality. Showing that work as it happens builds more trust than a spinner ever could.",
+          "The first run narrates its own work as it happens: public records first, then radon, Superfund proximity, flood zones, and water quality. Showing the work builds more trust than a spinner ever could.",
         width: 1600,
         height: 1000,
       },
@@ -376,7 +373,7 @@ export const projects: Project[] = [
         alt: "Hearth Smart Uploader extracting structured fields from an appliance nameplate photo",
         title: "Smart Uploader",
         caption:
-          "A photo of an appliance nameplate becomes a structured inventory record. A Claude Haiku vision pipeline reads the manufacturer, model, and serial off the label, pulls out the key facts, and routes the result through a review step before saving. The same uploader also handles multi-page service receipts.",
+          "A photo of an appliance nameplate becomes a structured inventory record, with a review step between the extraction and the save. The same uploader takes multi-page service receipts.",
         width: 1600,
         height: 1000,
       },
@@ -385,7 +382,7 @@ export const projects: Project[] = [
         alt: "Hearth inventory detail page with extracted facts, Research this model panel, and decoded manufactured date",
         title: "Inventory detail",
         caption:
-          "Each appliance gets its own page with extracted facts, an on-demand “Research this model” panel that streams a grounded summary of service life and maintenance needs, and a manufactured-date tile auto-filled by a reasoning model decoding the serial number.",
+          "Each appliance gets its own page: the extracted facts, an on-demand “Research this model” panel that streams a grounded summary of service life and maintenance, and a manufactured-date tile decoded from the serial number.",
         width: 1600,
         height: 1000,
       },
@@ -394,7 +391,7 @@ export const projects: Project[] = [
         alt: "Hearth habitat finding for EPA Superfund proximity with tiered distance model and contaminant descriptions",
         title: "Habitat: Superfund proximity",
         caption:
-          "Hearth queries EPA Envirofacts SEMS data by coordinates, joins it to a tiered proximity model, attaches EPA's Community Involvement Coordinator contacts, and summarizes the result in a single paragraph calibrated to neither overstate nor understate the risk. Each contaminant in the list carries a plain-language description drawn from a curated reference table.",
+          "The finding for a nearby Superfund site: distance tier, NPL status, and EPA's Community Involvement Coordinator for the site. Every contaminant listed carries a plain-language description of what it actually is.",
         width: 1600,
         height: 1000,
       },
@@ -403,7 +400,7 @@ export const projects: Project[] = [
         alt: "Hearth water quality awareness panel showing utility lookup, SDWIS violations, and lead/copper sample data",
         title: "Habitat: Water quality awareness",
         caption:
-          "EPA's CWS service-area layer resolves the home's coordinates to a Public Water System ID. From there, SDWIS violation history and lead/copper sample data are pulled, parsed, and severity-classified. The page then shows the compliance state, the contaminants detected against their federal action levels, and the actions it recommends for this specific water source.",
+          "The compliance picture for the home's own water system: violation history, the contaminants detected against their federal action levels, and the actions Hearth recommends for this specific source.",
         width: 1600,
         height: 1000,
       },
@@ -412,7 +409,7 @@ export const projects: Project[] = [
         alt: "Hearth remediation matrix mapping the home's detected water contaminants against filter technologies, with a recommended carbon-block plus reverse-osmosis combination",
         title: "Habitat: Remediation matrix",
         caption:
-          "The water module's real output is this remediation matrix, personalized from the home's actual 2024 Consumer Confidence Report. Every contaminant detected in the supply (lead, PFAS, trihalomethanes, haloacetic acids, VOCs, arsenic, and nitrate) is mapped against six filter technologies, with cell shading showing how well each one removes it and the detected rows highlighted in amber. Hearth reads that grid into a concrete recommendation: an NSF/ANSI 53 + P473 carbon block covers six of the nine detected contaminants, and an NSF/ANSI 58 reverse-osmosis stage handles the fluoride, arsenic, and nitrate a carbon block can't touch. Each tier comes with real install and annual-cost figures, and the certifications are named so every suggestion points to a product the homeowner can actually buy rather than a generic “consider a filter.”",
+          "The water module's real output, built from the home's own 2024 Consumer Confidence Report: every contaminant actually detected in the supply, mapped against six filter technologies, detected rows highlighted. Hearth reads that grid into one specific recommendation, with certifications named and install and annual costs attached, so it points at a product the homeowner can buy rather than a generic “consider a filter.”",
         width: 876,
         height: 1097,
       },
@@ -421,7 +418,7 @@ export const projects: Project[] = [
         alt: "Hearth maintenance panel with tiered tasks, cadences, and per-task reasoning",
         title: "Maintenance panel",
         caption:
-          "A real maintenance plan, assembled by a reasoning-model workflow from the appliance's research summary, the home's habitat findings, and any attached service receipts. Tasks are tiered by urgency and scheduled with cadences (interval, seasonal, one-time, per-use), and every one of them carries its own reasoning.",
+          "A real maintenance plan for one appliance, tiered by urgency and scheduled by cadence: interval, seasonal, one-time, per-use. Every task carries its own reasoning.",
         width: 1600,
         height: 1000,
       },
@@ -430,7 +427,7 @@ export const projects: Project[] = [
         alt: "Hearth task detail showing a dishwasher cleaning task with hard-water habitat modifier tightening the cadence to monthly",
         title: "Task detail with cross-module reasoning",
         caption:
-          "Every task sits one tap away from a “why this task” explanation. Here, a dishwasher-cleaning cadence was tightened from the usual one-to-two months down to monthly because the water-quality module found hard water in the user's county, a finding that flowed into the maintenance pipeline as a habitat modifier. The card spells out the adjustment, where it came from, and the locality in plain language, so the schedule never feels arbitrary.",
+          "Every task is one tap from a “why this task” card. Here a dishwasher-cleaning cadence tightened from the usual one to two months down to monthly, because the water-quality module found hard water in the county, and the card says exactly that.",
         width: 1600,
         height: 1000,
       },
@@ -461,18 +458,6 @@ export const projects: Project[] = [
     ],
     designDecisions: [
       {
-        title: "The user's water source declaration trumps EPA's map.",
-        body: "EPA's national CWS service-area layer has documented coverage gaps, and established city addresses can sit in the holes between polygons. So when a user says during onboarding that they're on city water, Hearth runs a nearest-polygon fallback against a 500-meter buffer before it ever falls through to “we couldn't pinpoint your utility.” Trusting what the user told us over a map with known holes gives a more honest answer than quietly treating a polygon miss as a private well.",
-      },
-      {
-        title: "Serial-number decoding runs on a separate reasoning model.",
-        body: "The streaming Research-this-model pipeline uses a fast non-reasoning model to keep latency down. Decoding a manufacture date from a serial number is a different kind of problem, because it demands determinism. In testing, non-reasoning models would invent a plausible-looking decoding rule on each call and then confidently apply it to that same serial. Moving the decode into a parallel call on a reasoning model, under a strict protocol of name the rule, apply it, verify internal consistency, and return null if any step fails, eliminated the hallucinated dates while leaving the rest of the pipeline just as fast.",
-      },
-      {
-        title: "Soft-fail at every level.",
-        body: "Every external data source can fail, whether it's Mapbox, EPA Envirofacts, FEMA NFHL, EPA's drinking-water APIs, or the AI Gateway. Hearth is built so that when one does, the user-visible result degrades to “we don't know yet” instead of a confidently wrong answer, and unrelated features keep working. The activity log on each habitat finding records which sources answered and which didn't, so the user can see exactly what was checked.",
-      },
-      {
         title:
           "JSONB columns earn promotion to real columns only when a query pattern demands it.",
         body: "The inventory and document tables both carry a `metadata` JSONB column for subtype-specific fields that don't need cross-row queries yet, things like vehicle VINs and plate states, pet microchip numbers, or a receipt's vendor and line items. When a query pattern finally needs one of those fields as a real column, say, aggregating values for an insurance valuation, that shape migrates out of JSONB into a column of its own. Until then, JSONB keeps the schema small and the path to a new feature short.",
@@ -481,52 +466,45 @@ export const projects: Project[] = [
         title: "Workflow errors are sorted into terminal vs. retryable.",
         body: "Hearth's durable jobs run on Vercel Workflows, where a naive policy retries every failure as if it were transient. Hearth instead marks its orchestrator-internal errors as non-retryable: constraint violations, missing entities, a failed write. Those surface a deterministic bug in about two seconds rather than grinding through roughly thirty seconds of pointless retries, while genuinely transient errors like a flaky EPA call or a gateway hiccup still retry. That one distinction turns the workflow layer into a fast feedback loop during development instead of a latency tax.",
       },
-      {
-        title:
-          "Data shared across homes is ingested once and cached for everyone.",
-        body: "Some facts aren't per-house. A water utility publishes one annual quality report, and it's identical for every home on that system. Rather than ingest and summarize it once per user, Hearth keys the report by utility and year and serves a single cached row to every house the utility covers. The same pattern fits any data shared across entities, and it saves redundant ingestion, duplicate LLM cost, and needless load on slow government APIs.",
-      },
-      {
-        title: "Findings go stale-but-labeled instead of eagerly regenerating.",
-        body: "When upstream data changes, Hearth ingests it, works out which homes are affected, and writes a notification, but it stops short of regenerating any findings. The existing finding stays put, clearly labeled as stale, until the user decides to reanalyze. There's a cost asymmetry at play: regenerating findings nobody is looking at is wasted money, and the notification on its own already tells the user the system is watching, without any silent background churn.",
-      },
     ],
+    // Deliberately terse: the diagram above already explains how these fit
+    // together, so each card only has to name the call and its one constraint.
     aiIntegrations: [
       {
         name: "Vision extraction pipeline",
         provider: "Anthropic / Claude Haiku",
         description:
-          "A multi-mode vision pipeline reads appliance nameplates, multi-page service receipts, and identifying documents, with Claude Haiku chosen for fast, low-cost structured extraction. Output is bound by Zod schemas; prompt-leak prevention is enforced with unit tests that pin the no-leak contract.",
+          "Reads appliance nameplates, multi-page service receipts, and identifying documents. Haiku for fast, cheap structured extraction; every output is bound by a Zod schema, with unit tests pinning the no-prompt-leak contract.",
       },
       {
         name: "Research this model",
         provider: "Perplexity / Sonar",
         description:
-          "A streaming, web-grounded summary of an appliance's service life, maintenance needs, and known issues, researched with Perplexity Sonar and routed through the Vercel AI Gateway. It renders section by section, headline first, then overview, service life, and maintenance, so the reader has real content within seconds instead of waiting on a full response.",
+          "A web-grounded summary of an appliance's service life, maintenance needs, and known issues, routed through the Vercel AI Gateway. It streams section by section, so there is real content on screen within seconds.",
       },
       {
         name: "Serial-number decode",
         provider: "Reasoning model (env-driven)",
         description:
-          "A parallel call on a reasoning model decodes manufacture dates from serial numbers when no install date is on file. Strict “name-the-rule, apply, verify, return null on uncertainty” protocol prevents hallucinated dates. Only high-confidence decodes are persisted.",
+          "Decodes a manufacture date from the serial number when no install date is on file. The model has to name its rule, apply it, and return null rather than guess; only high-confidence decodes persist.",
       },
       {
         name: "Maintenance synthesis workflow",
         provider: "Vercel Workflow SDK",
         description:
-          "A durable background workflow pairs a direct-from-documents extraction pipeline with an LLM synthesis pipeline, drawing on the appliance's research summary, the home's habitat findings, and any attached service receipts to emit a structured maintenance plan. Results persist to an append-only event log with per-task reasoning stored as JSONB; each task carries its own cadence, anchor, and modifiers.",
+          "A durable background job turns the appliance's research summary, the home's habitat findings, and its receipts into a scheduled plan. Each task is stored with its own cadence, anchor, modifiers, and reasoning.",
       },
       {
         name: "Habitat data integration",
         provider: "Mapbox + EPA + FEMA",
         description:
-          "Address autofill via Mapbox feeds coordinates into a set of public-data lookups: EPA Envirofacts SEMS for Superfund sites, FEMA NFHL for flood zones, EPA's CWS service-area layer for drinking-water utilities, and SDWIS for compliance and lead/copper samples. Per-state shared caches spread the cost of slow EPA calls across every user in the same area.",
+          "Mapbox address autofill feeds coordinates into EPA Envirofacts, FEMA NFHL, EPA's water-utility layer, and SDWIS. Shared per-state caches spread the cost of slow federal APIs across everyone in the same area.",
       },
       {
         name: "Activity logs and methodology transparency",
         provider: "In-house",
         description:
-          "Every habitat finding emits a step-by-step activity log narrating what was queried, what came back, what rule was applied, and how severity was decided. Every classification rule is published on an in-app methodology page so users can see how Hearth thinks.",
+          "Every habitat finding emits a step-by-step log of what was queried, what came back, and how severity was decided. The classification rules themselves are published on an in-app methodology page.",
       },
     ],
     status: "live",
