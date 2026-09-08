@@ -15,7 +15,7 @@ It is a small, fully static site with one interactive feature: a spam-protected 
 - TypeScript, strict. Path alias `@/*` maps to `src/*`.
 - Tailwind CSS v4 via `@tailwindcss/postcss`. Theme extensions live in `src/app/globals.css` under `@theme inline`; there is no tailwind.config file.
 - pnpm only. The lockfile is `pnpm-lock.yaml`; never run npm or yarn here.
-- Fonts via `next/font/google`, self-hosted at build time: Geist (body, `--font-geist-sans`), Geist Mono, Space Mono (`--font-display`, used for nav brand and eyebrow labels), Archivo (`--font-spec`, used only by the Aviary system diagram).
+- Fonts via `next/font/google`, self-hosted at build time: Geist (body, `--font-geist-sans`), Geist Mono, Space Mono (`--font-display`, used for nav brand and eyebrow labels), Archivo (`--font-spec`, used only by the system diagrams).
 
 ## Route map
 
@@ -32,18 +32,22 @@ Three routes, all prerendered:
 Behavior encoded in the template, worth knowing before editing:
 
 - `heroImage` is a switch. When present, the hero shows a large zoomable screenshot (`HeroScreenshot`, lightbox on click) and the gallery renders as a captioned grid (`ProjectGalleryGrid`). When absent, the gallery renders as a strip (`ProjectGallery`) below the hero instead.
-- `designDecisions` and `aiIntegrations` are optional; their sections render only when present and non-empty.
+- `description`, `designDecisions`, and `aiIntegrations` are all optional; their sections render only when present and non-empty. `description` is optional because a project fronted by a system diagram does not need an Overview section repeating it in prose; Hearth omits it entirely.
 - `order` controls grid ordering, and prev/next navigation on detail pages follows the same ordering via `getAdjacentProjects`.
 - `status` maps to a badge; `live` shows no badge on the homepage cards but does show one on detail pages.
 - Screenshot dimensions in the data are real pixel dimensions; the lightbox uses them for zoom quality.
 
 Portfolio prose is Todd's voice and is treated as copy, not filler. Trim or rewrite only with explicit direction, and keep facts verifiable against the source project repos (the Aviary platform lives in `C:\WEBDEV\project-squirrel-grok`; check its TechnicalGuide.md and Servers/ runbooks before making claims about station status or hardware).
 
-## The Aviary system diagram
+## System diagrams
 
-`src/app/components/AviarySystemDiagram.tsx` is a deliberate one-off: a responsive port of a Claude Design spec-sheet infographic (project "Aviary system diagram"), mounted directly beneath the hero for the aviary slug only. It replaces what was previously several paragraphs of architecture prose and the AI Integrations card grid on that page.
+Two projects lead with a spec-sheet infographic instead of architecture prose: `AviarySystemDiagram.tsx` and `HearthSystemDiagram.tsx`, both in `src/app/components/`. Each is a hand-built responsive port of a Claude Design artboard, so the detail template picks one by slug through the `systemDiagrams` lookup at the top of `src/app/portfolio/[slug]/page.tsx` and renders it between the hero divider and Tech Stack. A slug with no entry simply gets no diagram; adding a third means writing the component and adding one line to that map.
 
-Its design intentionally does not use the site palette. It keeps the source design system's look (Archivo, paper `#f3f2f2`, ink `#201e1d`, red accent `#ec3013`, square corners) with all color tokens scoped inside the component, framed like the screenshots (rounded corners, ring, deep shadow) so it reads as a printed datasheet exhibited on the dark page. At `md` and up it mirrors the 1600px desktop artboard (three station cards, horizontal pipeline); below `md` it follows the 430px mobile artboard (stacked, vertical arrows). Content edits (station status, pipeline stages) are data edits in the arrays at the top of the file. Facts must match the platform repo's runbooks.
+Their design intentionally does not use the site palette. Both keep the source design system's look (Archivo, paper `#f3f2f2`, ink `#201e1d`, red accent `#ec3013`, square corners) with an identical set of color tokens scoped inside each component, framed like the screenshots (rounded corners, ring, deep shadow) so they read as printed datasheets exhibited on the dark page. At `md` and up each mirrors its desktop artboard; below `md` it stacks and the horizontal arrows become vertical ones. Content edits are data edits in the typed arrays at the top of each file.
+
+Because the diagram carries the architecture, the page around it is deliberately thin. The Aviary diagram replaced several paragraphs of prose and that page's AI Integrations grid. The Hearth diagram replaced the whole Overview section, cut its screenshot captions to a sentence or two apiece, and cut Selected Design Decisions to the only two the diagram does not already carry (terminal-vs-retryable workflow errors, and JSONB promotion). Keep that discipline when editing: if the diagram says it, the prose should not repeat it.
+
+Facts in both must match the source project repos (the Aviary platform lives in `C:\WEBDEV\project-squirrel-grok`; check its TechnicalGuide.md and `Servers/` runbooks before making claims about station status or hardware).
 
 ## Contact pipeline
 

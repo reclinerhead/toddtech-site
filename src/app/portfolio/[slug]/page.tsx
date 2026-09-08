@@ -14,6 +14,7 @@ import { ProjectGallery } from "@/app/components/ProjectGallery";
 import { ProjectGalleryGrid } from "@/app/components/ProjectGalleryGrid";
 import { HeroScreenshot } from "@/app/components/HeroScreenshot";
 import { AviarySystemDiagram } from "@/app/components/AviarySystemDiagram";
+import { HearthSystemDiagram } from "@/app/components/HearthSystemDiagram";
 
 interface RouteParams {
   params: Promise<{ slug: string }>;
@@ -49,6 +50,14 @@ export async function generateMetadata({
   };
 }
 
+// Projects whose architecture is carried by a spec-sheet diagram under the
+// hero instead of prose. Each is a hand-built one-off, so this is a lookup by
+// slug rather than anything in the data module.
+const systemDiagrams: Record<string, () => React.ReactElement> = {
+  aviary: AviarySystemDiagram,
+  hearth: HearthSystemDiagram,
+};
+
 const statusStyles: Record<ProjectStatus, { label: string; className: string }> = {
   live: {
     label: "Live",
@@ -75,6 +84,7 @@ export default async function PortfolioDetailPage({ params }: RouteParams) {
 
   const { prev, next } = getAdjacentProjects(slug);
   const status = statusStyles[project.status];
+  const SystemDiagram = systemDiagrams[project.slug];
 
   return (
     <div className="min-h-screen text-white">
@@ -169,11 +179,11 @@ export default async function PortfolioDetailPage({ params }: RouteParams) {
         <div className="h-px bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent" />
       </div>
 
-      {/* ── System diagram (Aviary only) ── */}
-      {project.slug === "aviary" && (
+      {/* ── System diagram ── */}
+      {SystemDiagram && (
         <section className="py-16 lg:py-20" aria-label="System architecture">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <AviarySystemDiagram />
+            <SystemDiagram />
           </div>
         </section>
       )}
@@ -199,19 +209,21 @@ export default async function PortfolioDetailPage({ params }: RouteParams) {
         </div>
       </section>
 
-      {/* ── Overview ── */}
-      <section className="py-16 lg:py-20">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="font-display text-2xl md:text-3xl font-bold tracking-tight mb-8 text-white">
-            Overview
-          </h2>
-          <div className="space-y-5 text-gray-300 leading-relaxed">
-            {project.description.map((para, i) => (
-              <p key={i}>{para}</p>
-            ))}
+      {/* ── Overview (omitted when a system diagram carries the story) ── */}
+      {project.description && project.description.length > 0 && (
+        <section className="py-16 lg:py-20">
+          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="font-display text-2xl md:text-3xl font-bold tracking-tight mb-8 text-white">
+              Overview
+            </h2>
+            <div className="space-y-5 text-gray-300 leading-relaxed">
+              {project.description.map((para, i) => (
+                <p key={i}>{para}</p>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* ── Gallery (captioned grid — only when hero image is present) ── */}
       {project.heroImage && project.screenshots.length > 0 && (
