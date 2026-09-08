@@ -32,6 +32,7 @@ Three routes, all prerendered:
 Behavior encoded in the template, worth knowing before editing:
 
 - `heroImage` is a switch. When present, the hero shows a large zoomable screenshot (`HeroScreenshot`, lightbox on click) and the gallery renders as a captioned grid (`ProjectGalleryGrid`). When absent, the gallery renders as a strip (`ProjectGallery`) below the hero instead.
+- The hero frame takes its aspect ratio from the image's own `width`/`height` rather than a fixed one, so hero art of any shape shows whole. Getting those two numbers right in the data therefore affects layout, not just lightbox zoom quality.
 - `description`, `designDecisions`, and `aiIntegrations` are all optional; their sections render only when present and non-empty. `description` is optional because a project fronted by a system diagram does not need an Overview section repeating it in prose; Hearth omits it entirely.
 - `order` controls grid ordering, and prev/next navigation on detail pages follows the same ordering via `getAdjacentProjects`.
 - `status` maps to a badge; `live` shows no badge on the homepage cards but does show one on detail pages.
@@ -45,9 +46,9 @@ Two projects lead with a spec-sheet infographic instead of architecture prose: `
 
 Their design intentionally does not use the site palette. Both keep the source design system's look (Archivo, paper `#f3f2f2`, ink `#201e1d`, red accent `#ec3013`, square corners) with an identical set of color tokens scoped inside each component, framed like the screenshots (rounded corners, ring, deep shadow) so they read as printed datasheets exhibited on the dark page. At `md` and up each mirrors its desktop artboard; below `md` it stacks and the horizontal arrows become vertical ones. Content edits are data edits in the typed arrays at the top of each file.
 
-Because the diagram carries the architecture, the page around it is deliberately thin. Both diagram pages dropped their prose paragraphs and their AI Integrations grid. Hearth went furthest: no Overview section at all, screenshot captions cut to a sentence or two apiece, and Selected Design Decisions cut to the only two the diagram does not already carry (terminal-vs-retryable workflow errors, and JSONB promotion). What a diagram page keeps is the hero, Tech Stack, the screenshot gallery, and whatever design decisions the diagram has no room for. Keep that discipline when editing: if the diagram says it, the prose should not repeat it.
+Because the diagram carries the architecture, the page around it is deliberately thin. Aviary dropped several paragraphs of prose and its AI Integrations grid. Hearth dropped its Overview section entirely, cut its screenshot captions to a sentence or two apiece, cut Selected Design Decisions to the only two the diagram does not already carry (terminal-vs-retryable workflow errors, and JSONB promotion), and keeps a deliberately terse AI Integrations grid where each card names one call and its one constraint rather than re-explaining the pipeline. Keep that discipline when editing: if the diagram says it, the prose beside it should not say it again at length.
 
-Échoes is the counterexample and the reason the sections stayed optional rather than being deleted: no diagram, so it still carries a full Overview and an AI Integrations grid.
+Échoes is the counterexample, and the reason these sections are optional rather than deleted: no diagram, so it still carries a full Overview and full-length integration cards.
 
 Facts in both must match the source project repos (the Aviary platform lives in `C:\WEBDEV\project-squirrel-grok`; check its TechnicalGuide.md and `Servers/` runbooks before making claims about station status or hardware).
 

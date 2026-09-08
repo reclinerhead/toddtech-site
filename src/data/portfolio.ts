@@ -60,10 +60,10 @@ const echoesThumbnail: Screenshot = {
 };
 
 const hearthHero: Screenshot = {
-  src: "/images/hearth/hero-dashboard.png",
-  alt: "Hearth dashboard showing a property's home facts, generated illustration, and habitat findings",
-  width: 1600,
-  height: 1000,
+  src: "/images/hearth/hero-home.jpg",
+  alt: "An illustrated house overlaid with Hearth callout cards: home facts, air and water quality, ground risk, and the furnace, water heater, washer, and dishwasher with model, age, and next maintenance",
+  width: 1872,
+  height: 1056,
 };
 
 export const projects: Project[] = [
@@ -467,8 +467,46 @@ export const projects: Project[] = [
         body: "Hearth's durable jobs run on Vercel Workflows, where a naive policy retries every failure as if it were transient. Hearth instead marks its orchestrator-internal errors as non-retryable: constraint violations, missing entities, a failed write. Those surface a deterministic bug in about two seconds rather than grinding through roughly thirty seconds of pointless retries, while genuinely transient errors like a flaky EPA call or a gateway hiccup still retry. That one distinction turns the workflow layer into a fast feedback loop during development instead of a latency tax.",
       },
     ],
-    // No AI Integrations grid either: the diagram's pipeline, habitat modules,
-    // and rule banner already name every model call and what constrains it.
+    // Deliberately terse: the diagram above already explains how these fit
+    // together, so each card only has to name the call and its one constraint.
+    aiIntegrations: [
+      {
+        name: "Vision extraction pipeline",
+        provider: "Anthropic / Claude Haiku",
+        description:
+          "Reads appliance nameplates, multi-page service receipts, and identifying documents. Haiku for fast, cheap structured extraction; every output is bound by a Zod schema, with unit tests pinning the no-prompt-leak contract.",
+      },
+      {
+        name: "Research this model",
+        provider: "Perplexity / Sonar",
+        description:
+          "A web-grounded summary of an appliance's service life, maintenance needs, and known issues, routed through the Vercel AI Gateway. It streams section by section, so there is real content on screen within seconds.",
+      },
+      {
+        name: "Serial-number decode",
+        provider: "Reasoning model (env-driven)",
+        description:
+          "Decodes a manufacture date from the serial number when no install date is on file. The model has to name its rule, apply it, and return null rather than guess; only high-confidence decodes persist.",
+      },
+      {
+        name: "Maintenance synthesis workflow",
+        provider: "Vercel Workflow SDK",
+        description:
+          "A durable background job turns the appliance's research summary, the home's habitat findings, and its receipts into a scheduled plan. Each task is stored with its own cadence, anchor, modifiers, and reasoning.",
+      },
+      {
+        name: "Habitat data integration",
+        provider: "Mapbox + EPA + FEMA",
+        description:
+          "Mapbox address autofill feeds coordinates into EPA Envirofacts, FEMA NFHL, EPA's water-utility layer, and SDWIS. Shared per-state caches spread the cost of slow federal APIs across everyone in the same area.",
+      },
+      {
+        name: "Activity logs and methodology transparency",
+        provider: "In-house",
+        description:
+          "Every habitat finding emits a step-by-step log of what was queried, what came back, and how severity was decided. The classification rules themselves are published on an in-app methodology page.",
+      },
+    ],
     status: "live",
     order: 2,
   },
