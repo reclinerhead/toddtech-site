@@ -24,17 +24,30 @@ const archivo = Archivo({
   subsets: ["latin"],
 });
 
+const description =
+  "Portfolio of Todd Wyatt, an applied AI and systems engineer in Kalamazoo, Michigan. LLM systems, edge ML, and full-stack TypeScript, all running in production. Open to applied AI and forward deployed engineering roles, on contract through ToddTech LLC or full-time. U.S. Navy veteran. CompTIA Security+ certified.";
+
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.toddtech.llc"),
   title: {
-    default: "ToddTech LLC - Applied AI Systems for Michigan Businesses",
+    default: "Todd Wyatt, Applied AI and Systems Engineer | ToddTech LLC",
     template: "%s | ToddTech LLC",
   },
-  description:
-    "Practical AI for small and mid-size businesses: document assistants, paperwork automation, and smart monitoring, built and deployed by a Kalamazoo engineer with four AI systems in production. Veteran-owned. Security+ certified.",
+  description,
   openGraph: {
     siteName: "ToddTech LLC",
     locale: "en_US",
     type: "website",
+    title: "Todd Wyatt, Applied AI and Systems Engineer",
+    description,
+    images: [
+      {
+        url: "/images/aviary/0-hero.png",
+        width: 1507,
+        height: 973,
+        alt: "The Aviary dashboard, one of Todd Wyatt's production AI systems",
+      },
+    ],
   },
   icons: {
     icon: [

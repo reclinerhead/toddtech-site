@@ -4,7 +4,9 @@ The living technical guide for the ToddTech LLC public site. It describes what i
 
 ## What this site is
 
-The public marketing and portfolio site for ToddTech LLC (toddtech.llc), positioning the company as an Applied AI engineering practice in Kalamazoo, Michigan. It is a small, fully static site with one interactive feature: a spam-protected contact form. There is no database, no auth, and no user-generated content. Everything renders at build time except the contact form's server action.
+The hiring portfolio of Todd Wyatt at toddtech.llc. It is not a services marketing site: its audience is hiring managers, CTOs, and recruiters, and its job is to show what Todd builds, that it runs in production, how he thinks, and how to reach him. ToddTech LLC is the wordmark (the domain matches) and the contracting vehicle for subcontract and corp-to-corp work, so it stays visible but secondary to Todd's name and role. Target roles, in preference order: applied AI and forward deployed engineering first, .NET and modernization work second; copy that lists roles keeps that order and uses the phrase "forward deployed engineer" verbatim because recruiters search for it. Every claim on the site is interview-defensible and sourced from the sibling repos' `ProjectExperience.md` files or Todd's resume.
+
+It is a small, fully static site with one interactive feature: a spam-protected contact form. There is no database, no auth, and no user-generated content. Everything renders at build time except the contact form's server action.
 
 ## Stack
 
@@ -19,7 +21,7 @@ The public marketing and portfolio site for ToddTech LLC (toddtech.llc), positio
 
 Three routes, all prerendered:
 
-- `/` (`src/app/page.tsx`): the entire marketing page in one file. Sections in order: fixed `SiteNav`, full-viewport hero with staggered `animate-fade-up` entrances, four service cards, "Why Work With Me", `Portfolio` (the project card grid, `id="portfolio"`), and the contact section (`id="contact"`) with info cards beside `ContactForm`. In-page nav links use `/#portfolio` and `/#contact` anchors.
+- `/` (`src/app/page.tsx`): the entire homepage in one file. Sections in order: fixed `SiteNav`, full-viewport hero with staggered `animate-fade-up` entrances (name and role, production subhead, availability line, CTAs to the work and GitHub, trust line), `Portfolio` (the project card grid, `id="portfolio"`) directly under the hero because it is the strongest content, a six-tile Capabilities grid (each tile ends with a "Proof" line naming the project or employer that demonstrates it), "How I work" (six border-left points), About (`id="about"`, one paragraph), and the contact section (`id="contact"`) with a contact-info card and a "Roles I'm targeting" card beside `ContactForm`. Section copy lives in typed arrays at the top of the file; the sections are plain JSX over them. In-page nav links use `/#portfolio`, `/#about`, and `/#contact` anchors; anchored sections carry `scroll-mt-16` to clear the fixed nav. A resume link and a LinkedIn link are intentionally absent until the PDF and URL exist.
 - `/portfolio/[slug]` (`src/app/portfolio/[slug]/page.tsx`): one shared detail template for every project, statically generated via `generateStaticParams` over the data module. Unknown slugs hit `notFound()` and the custom `not-found.tsx`.
 - Everything else falls through to the root `not-found` handling.
 
@@ -57,6 +59,10 @@ Environment variables (set in Vercel, mirrored in `.env.local`):
 ## Design language
 
 Dark, technical, cyan-accented. The ground is `#030712` with two fixed radial cyan glows and a masked dot-grid overlay, all defined on `body` in `globals.css`; page components sit on transparent backgrounds and inherit it. Recurring vocabulary: `bg-gray-800/50 border border-gray-700 rounded-xl` cards with `hover:border-cyan-500/50`, uppercase letter-spaced cyan kickers above section headings, gradient hairline dividers, and cyan glow shadows on primary CTAs. Keyframe animations (`fade-up`, `pulse-dot`, `scroll-line`) live in `globals.css` and are used on the homepage hero only. Styling is Tailwind utilities plus the occasional inline style for one-off gradients and shadows; no CSS modules, no styled-components. Images go through `next/image` with explicit `sizes`.
+
+`SiteNav` is a client component so the mobile menu can hold state. Desktop shows Work, About, GitHub (external, new tab), and the Contact button; below `md` a single button toggles a panel under the bar with the same links stacked. The button carries `aria-expanded` and `aria-controls`, its accessible label flips between "Open menu" and "Close menu", and the panel closes on link tap and on Escape. No dependency beyond the two lucide glyphs; the panel reuses the nav's glass treatment.
+
+Site metadata (title, description, Open Graph) is defined once in `src/app/layout.tsx`; the homepage overrides only the title with an `absolute` value so the `%s | ToddTech LLC` template does not double the suffix. Project pages set their own Open Graph block from the portfolio data.
 
 Security headers (nosniff, frame deny, referrer policy, permissions policy) are set globally in `next.config.ts`.
 

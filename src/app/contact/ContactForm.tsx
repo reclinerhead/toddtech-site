@@ -89,14 +89,15 @@ export function ContactForm() {
 
       <div>
         <label htmlFor="message" className={labelClass}>
-          How can I help? <span className="text-cyan-400">*</span>
+          What&apos;s the role or the problem?{" "}
+          <span className="text-cyan-400">*</span>
         </label>
         <textarea
           id="message"
           name="message"
           rows={5}
           required
-          placeholder="Tell me about your business, current challenges, or what you're looking to achieve..."
+          placeholder="Tell me about the role, the team, or the system you need built..."
           className={`${inputClass} resize-none`}
         />
       </div>
