@@ -24,6 +24,23 @@ export interface DesignDecision {
   body: string;
 }
 
+/** One page of a project that anonymous visitors can open, no account needed. */
+export interface PublicPage {
+  /** Short line above the title, e.g. the utility or organization the page covers. */
+  eyebrow: string;
+  title: string;
+  description: string;
+  url: string;
+}
+
+export interface PublicPages {
+  heading: string;
+  intro: string;
+  pages: PublicPage[];
+  /** Small print naming the records behind every finding on the pages. */
+  sourcesNote?: string;
+}
+
 export interface Project {
   slug: string;
   title: string;
@@ -37,6 +54,8 @@ export interface Project {
   techStack: string[];
   aiIntegrations?: AIIntegration[];
   designDecisions?: DesignDecision[];
+  /** Live pages open to anonymous visitors. Renders a section under the system diagram when present. */
+  publicPages?: PublicPages;
   liveUrl?: string;
   liveUrlLabel?: string;
   liveUrlNote?: string;
@@ -492,6 +511,31 @@ export const projects: Project[] = [
           "Every habitat finding emits a step-by-step log of what was queried, what came back, and how severity was decided. The classification rules themselves are published on an in-app methodology page.",
       },
     ],
+    // The only pages on any project that an anonymous visitor can open, so
+    // they get their own section right under the diagram.
+    publicPages: {
+      heading: "Public water quality findings",
+      intro:
+        "Hearth publishes a water quality profile for each city it serves, and these two are open to anyone, no account needed. Every number on them comes from EPA's Safe Drinking Water records and the utility's own published annual water quality report. Hearth reads those records the same way it does for the households it watches over, and shows its work. The tone is awareness, not alarm: it is the same report the utility already mails out, made easier to understand.",
+      pages: [
+        {
+          eyebrow: "Kalamazoo Public Water Supply",
+          title: "Kalamazoo, Michigan",
+          description:
+            "A groundwater system serving about 190,000 people. Five years of EPA violation history, the most recent lead and copper sampling, forever chemicals (PFAS) monitoring, and every contaminant the utility's annual reports list as detected, with the trend across the reports on file.",
+          url: "https://hearth.toddtech.llc/water/kalamazoo-mi",
+        },
+        {
+          eyebrow: "Portage Public Water Supply",
+          title: "Portage, Michigan",
+          description:
+            "The neighboring city, on its own groundwater system. The same picture: EPA compliance record, lead and copper sampling, forever chemicals (PFAS) monitoring, and each detected contaminant shown against the limit its report measures it by.",
+          url: "https://hearth.toddtech.llc/water/portage-mi",
+        },
+      ],
+      sourcesNote:
+        "Sources on every page: EPA's Safe Drinking Water Information System for violations and lead and copper sampling, and each utility's published annual water quality report, the Consumer Confidence Report it sends to customers, for everything detected in the supply. Hearth adds the plain-English reading and nothing else.",
+    },
     status: "live",
     order: 2,
   },
