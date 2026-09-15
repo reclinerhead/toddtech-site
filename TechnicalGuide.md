@@ -38,7 +38,7 @@ Behavior encoded in the template, worth knowing before editing:
 - `status` maps to a badge; `live` shows no badge on the homepage cards but does show one on detail pages.
 - Screenshot dimensions in the data are real pixel dimensions; the lightbox uses them for zoom quality.
 
-Portfolio prose is Todd's voice and is treated as copy, not filler. Trim or rewrite only with explicit direction, and keep facts verifiable against the source project repos (the Aviary platform lives in `C:\WEBDEV\project-squirrel-grok`; check its TechnicalGuide.md and Servers/ runbooks before making claims about station status or hardware).
+Portfolio prose is Todd's voice and is treated as copy, not filler. Trim or rewrite only with explicit direction, and keep facts verifiable against the source project repos. The reader is a hiring manager or technical lead skimming a portfolio, not an engineer deploying the system: body copy, captions, Design Decisions, and Integration descriptions stay in plain words, with "AI" the only acronym allowed. Vendor and product names live in the Tech Stack tags and the provider tag on each Integration card, not in the prose. Facts must still match the source project repos (the Aviary platform lives in `C:\WEBDEV\project-squirrel-grok`; check its TechnicalGuide.md and Servers/ runbooks before making claims about station status or hardware).
 
 ## System diagrams
 
@@ -48,7 +48,7 @@ Their design intentionally does not use the site palette. Both keep the source d
 
 Because the diagram carries the architecture, the page around it is deliberately thin. Aviary dropped several paragraphs of prose and its AI Integrations grid. Hearth dropped its Overview section entirely, cut its screenshot captions to a sentence or two apiece, cut Selected Design Decisions to the only two the diagram does not already carry (terminal-vs-retryable workflow errors, and JSONB promotion), and keeps a deliberately terse AI Integrations grid where each card names one call and its one constraint rather than re-explaining the pipeline. Keep that discipline when editing: if the diagram says it, the prose beside it should not say it again at length.
 
-Échoes is the counterexample, and the reason these sections are optional rather than deleted: no diagram, so it still carries a full Overview and full-length integration cards.
+Échoes has no diagram, which is why these sections are optional rather than deleted: it keeps an Overview, but a three-paragraph one that leads with what the archive is, puts the Family Researcher second, and closes with how uploads become searchable. Its captions, three Design Decisions, and five Integration cards follow the same terseness as Hearth.
 
 Facts in both must match the source project repos (the Aviary platform lives in `C:\WEBDEV\project-squirrel-grok`; check its TechnicalGuide.md and `Servers/` runbooks before making claims about station status or hardware).
 
