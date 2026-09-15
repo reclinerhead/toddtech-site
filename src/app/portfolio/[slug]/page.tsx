@@ -188,6 +188,71 @@ export default async function PortfolioDetailPage({ params }: RouteParams) {
         </section>
       )}
 
+      {/* ── Public pages (only when the project has any) ── */}
+      {project.publicPages && project.publicPages.pages.length > 0 && (
+        <section
+          className="py-16 lg:py-20 bg-gray-900/30"
+          aria-labelledby="public-pages-heading"
+        >
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="mb-10 max-w-3xl">
+              <span className="inline-flex items-center gap-2.5 text-cyan-400 text-xs font-semibold tracking-[0.2em] uppercase mb-3">
+                <span
+                  className="w-1.5 h-1.5 rounded-full bg-cyan-400 shrink-0 animate-pulse-dot"
+                  aria-hidden
+                />
+                Live and open to the public
+              </span>
+              <h2
+                id="public-pages-heading"
+                className="font-display text-2xl md:text-3xl font-bold tracking-tight mb-4 text-white"
+              >
+                {project.publicPages.heading}
+              </h2>
+              <p className="text-gray-300 leading-relaxed">
+                {project.publicPages.intro}
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              {project.publicPages.pages.map((page) => (
+                <a
+                  key={page.url}
+                  href={page.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex flex-col gap-4 bg-gray-800/50 border border-gray-700 rounded-xl p-6 hover:border-cyan-500/50 hover:bg-cyan-500/5 transition-all"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <span className="block text-[0.65rem] tracking-[0.18em] uppercase text-gray-500 mb-1.5">
+                        {page.eyebrow}
+                      </span>
+                      <h3 className="text-white font-semibold text-xl leading-tight group-hover:text-cyan-300 transition-colors">
+                        {page.title}
+                      </h3>
+                    </div>
+                    <ExternalLink className="w-4 h-4 shrink-0 mt-1 text-gray-500 group-hover:text-cyan-300 transition-colors" />
+                  </div>
+                  <p className="text-gray-400 text-sm leading-relaxed">
+                    {page.description}
+                  </p>
+                  <span className="mt-auto pt-2 border-t border-white/5 font-mono text-xs text-gray-500 group-hover:text-gray-400 truncate transition-colors">
+                    {page.url.replace(/^https?:\/\//, "")}
+                  </span>
+                </a>
+              ))}
+            </div>
+
+            {project.publicPages.sourcesNote && (
+              <p className="mt-6 text-xs text-gray-500 leading-relaxed max-w-3xl">
+                {project.publicPages.sourcesNote}
+              </p>
+            )}
+          </div>
+        </section>
+      )}
+
       {/* ── Gallery (strip layout — only when no hero image) ── */}
       {!project.heroImage && (
         <section className="py-16 lg:py-20">
