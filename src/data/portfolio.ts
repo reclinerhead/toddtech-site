@@ -230,6 +230,15 @@ export const projects: Project[] = [
         height: 1152,
       },
       {
+        src: "/images/echoes/4b-life-story.png",
+        alt: "Échoes Create Biography dialog for Bertha Schillie, explaining how the printable Life Story is composed, with Download and Generate fresh buttons",
+        title: "A person's life story",
+        caption:
+          "One click turns everything the archive knows about a person, their photos, documents, key dates, and family connections, into a typeset, printable life story. It is the keepsake families spend weeks assembling by hand, or pay someone to produce, ready to share in a couple of minutes.",
+        width: 882,
+        height: 805,
+      },
+      {
         src: "/images/echoes/5-documents.png",
         alt: "Échoes Stories view, scanned letters and documents grouped into collections and individual documents",
         title: "Stories & documents",
