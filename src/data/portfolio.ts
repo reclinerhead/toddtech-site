@@ -54,9 +54,9 @@ const aviaryHero: Screenshot = {
 
 const echoesThumbnail: Screenshot = {
   src: "/images/echoes-mainpage.png",
-  alt: "Échoes home view of the AI family archive",
-  width: 1534,
-  height: 1044,
+  alt: "Échoes home view: the ask-me-anything box with suggested prompts, and the recently added photos, stories, and people",
+  width: 1673,
+  height: 1272,
 };
 
 const hearthHero: Screenshot = {
@@ -204,12 +204,12 @@ export const projects: Project[] = [
       },
       {
         src: "/images/echoes/2-photos.png",
-        alt: "Échoes photo archive, a grid of vintage family photos with era and family filter pills and a search bar",
+        alt: "Échoes photo archive filtered to the Schillie family, with family, era, and theme filter pills, a search box, and sort controls",
         title: "The photo archive",
         caption:
-          "Every photo, filtered by decade and family branch. Each one is searchable by what is in it and who is in it, not just by its filename.",
-        width: 1396,
-        height: 1183,
+          "Every photo, filtered by family branch, decade, or theme, from gatherings and portraits to keepsakes and everyday moments. Each one is also searchable by what is in it and who is in it.",
+        width: 1503,
+        height: 1139,
       },
       {
         src: "/images/echoes/3-people.png",
@@ -222,12 +222,21 @@ export const projects: Project[] = [
       },
       {
         src: "/images/echoes/4-person.png",
-        alt: "Échoes person profile for Bertha Schillie, with a generated biography, photo appearances, and a relationship sidebar",
+        alt: "Échoes person profile for Bertha Schillie, with a generated biography, photo and story counts, her photos, and relationships grouped by generation",
         title: "A person's profile",
         caption:
-          "A single person's page: a generated biography, every photo they appear in, and a sidebar of parents, siblings, and children. Every spelling and nickname resolves to one person.",
-        width: 1349,
-        height: 1185,
+          "A single person's page: a generated biography, every photo and story they appear in, and their relationships grouped by generation, from grandparents through siblings and children. Every spelling and nickname resolves to one person.",
+        width: 1480,
+        height: 1152,
+      },
+      {
+        src: "/images/echoes/4b-life-story.png",
+        alt: "Échoes Create Biography dialog for Bertha Schillie, explaining how the printable Life Story is composed, with Download and Generate fresh buttons",
+        title: "A person's life story",
+        caption:
+          "One click turns everything the archive knows about a person, their photos, documents, key dates, and family connections, into a typeset, printable life story, with every fact footnoted to the letter, clipping, or record it came from. It is the keepsake families spend weeks assembling by hand, or pay someone to produce, ready to share in a couple of minutes.",
+        width: 882,
+        height: 805,
       },
       {
         src: "/images/echoes/5-documents.png",
@@ -246,15 +255,6 @@ export const projects: Project[] = [
           "A 1944 Western Union telegram reporting Pvt. Loren Schillie missing in action, with a summary up top and a toggle between the scanned page and its transcript. Questions asked here are answered from this document alone.",
         width: 1091,
         height: 1184,
-      },
-      {
-        src: "/images/echoes/7-relationship-graph.png",
-        alt: "Échoes family relationship graph laid out by generation, from great-grandparents down to the children's generation",
-        title: "The family graph",
-        caption:
-          "The whole family as a generational graph, from the great-grandparents down to the children. This is the tree the Researcher reads, and the one it proposes additions to for a family member to confirm.",
-        width: 910,
-        height: 717,
       },
     ],
     tags: ["Next.js", "Supabase", "pgvector", "Agents", "xAI / Grok"],
