@@ -194,15 +194,13 @@ export const projects: Project[] = [
         height: 748,
       },
       {
-        // Placeholder art until a capture from the live app replaces it.
-        // Swap the file in place and update width/height to the real capture.
         src: "/images/echoes/1b-researcher.png",
         alt: "Échoes Family Researcher following the trail on a multi-step question, narrating each search and lookup as it works",
         title: "The Family Researcher",
         caption:
           "The Historian's more capable sibling: given a question no single search can answer, it uses tools to search the archive, look people up, and check the family tree, then searches again from what it found, narrating every step. I have used it for real research on my own family history, and it works.",
-        width: 1400,
-        height: 875,
+        width: 1165,
+        height: 1140,
       },
       {
         src: "/images/echoes/2-photos.png",
