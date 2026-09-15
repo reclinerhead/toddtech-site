@@ -234,7 +234,7 @@ export const projects: Project[] = [
         alt: "Échoes Create Biography dialog for Bertha Schillie, explaining how the printable Life Story is composed, with Download and Generate fresh buttons",
         title: "A person's life story",
         caption:
-          "One click turns everything the archive knows about a person, their photos, documents, key dates, and family connections, into a typeset, printable life story. It is the keepsake families spend weeks assembling by hand, or pay someone to produce, ready to share in a couple of minutes.",
+          "One click turns everything the archive knows about a person, their photos, documents, key dates, and family connections, into a typeset, printable life story, with every fact footnoted to the letter, clipping, or record it came from. It is the keepsake families spend weeks assembling by hand, or pay someone to produce, ready to share in a couple of minutes.",
         width: 882,
         height: 805,
       },
