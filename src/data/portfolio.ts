@@ -173,13 +173,13 @@ export const projects: Project[] = [
     slug: "echoes",
     title: "Échoes",
     tagline:
-      "A private invite-only family archive with conversational AI search across decades of photos and documents, plus a multi-hop Family Researcher agent that follows the trail from one record to the next.",
+      "A private family archive you can talk to. Ask it about decades of photos and letters, and let the Family Researcher follow the trail from one record to the next.",
+    // Written for a hiring audience, not an engineer about to deploy it: three
+    // short paragraphs, the Family Researcher in the middle, no acronyms.
     description: [
-      "Échoes is a private, invite-only family history portal built for a single extended family. It brings a large vintage photo archive together with the documents a family gathers over the years, from letters and certificates to news clippings, all in one searchable, conversational space. Strong RLS and access controls keep deeply personal material safe, so the grandkids can ask the archive what they would once have asked an elder.",
-      "Échoes runs a production retrieval stack on Supabase with pgvector. Photos and documents are indexed for hybrid retrieval, fusing pgvector semantic search with PostgreSQL full-text search through Reciprocal Rank Fusion. Photo uploads move through a multi-stage AI pipeline: InsightFace (SCRFD, ONNX) detects faces server-side, MediaPipe maps a 478-point landmark mesh per face in the browser, and xAI Grok vision then describes the scene, estimates the era, and notes condition and identity cues. OpenAI embeddings are computed at the per-person-instance level, so a face ranks against every other appearance of that same person in the archive. That matters when a relative looks dramatically different from one decade to the next. Scanned documents take a separate path: vision-based OCR, SSN redaction enforcement, and chunk-level embeddings.",
-      "The everyday interface is the Family Historian, a streaming RAG chat that answers natural-language questions across the entire archive and grounds every answer in citations. A query is first classified for intent and structured filters such as people, date range, location, and document type. It then runs through hybrid retrieval and is synthesized with multi-turn memory, with inline citations pointing back to the source photos and documents. A document-scoped variant narrows that same chat to a single open document, loading its chunks into context so you can interrogate just that page.",
-      "Beside it sits the Family Researcher, built for the questions a single search cannot answer. The Historian retrieves once against the question you typed. The Researcher is a bounded multi-hop agent: it plans, searches the archive, looks people up, walks the family graph, and searches again from what it just learned, streaming a live “Following the trail” narration so you can watch it work. A question like “who does Bertha’s obituary mention that we don’t have on record?” is the kind of thing it exists for. The evidence lives across letters, obituaries, and the relationship graph, and no one document matches the question on its own.",
-      "The agent is deliberately read-only. Four tools do the hunting: the same hybrid corpus search the Historian uses, person lookup with fuzzy and batched name matching, a one-hop relatives query, and a graph-computed kinship path so “great-great-grandfather” is a fact from the tree rather than a count the model might get wrong. After it answers, a separate reconciliation pass compares what the documents named against what the graph already records and proposes the missing people and relationships. A family member reviews, edits, and confirms each row; only then does a deterministic write path commit anything. Agent proposes, human approves, code writes. When the first pass is not enough, a “Think harder” button re-runs the same question on a deeper reasoning model (Claude Opus) instead of padding the prompt.",
+      "Échoes is a private, invite-only archive built for one extended family. It gathers decades of vintage photos together with the letters, certificates, and clippings a family collects over the years, all in one place you can search and talk to. Only invited family members can get in, so the grandkids can ask the archive what they would once have asked an elder.",
+      "Some questions cannot be answered by one search. Ask “who does Bertha's obituary mention that we don't have on record?” and the evidence is spread across letters, an obituary, and the family tree, with no single document matching the question. The Family Researcher handles those. It searches, looks people up, checks how they are related, and searches again from what it just found, narrating each step on screen. When it spots people or relationships the tree is missing, it proposes them, and a family member confirms each one before anything is saved.",
+      "Underneath, every photo and document is read by AI when it is uploaded. Photos get a description and an estimated era, faces are matched across decades, and scanned pages become readable text. That is what lets the archive answer a question asked in plain English, even when the words do not match what is written on the page.",
     ],
     thumbnail: echoesThumbnail,
     heroImage: echoesThumbnail,
@@ -189,16 +189,27 @@ export const projects: Project[] = [
         alt: "Échoes Family Historian answering “Who served in the war?” with a synthesized response, archive reference tiles, and suggested follow-up questions",
         title: "The Family Historian",
         caption:
-          "The Historian in action. Asking “Who served in the war?” returns a synthesized answer drawn from several records, a “From the archive” row of deduplicated reference tiles that link back to the exact photos, journals, and research docs behind it, and a set of suggested follow-up questions. Each query is classified for intent and structured filters, run through hybrid retrieval, and synthesized with multi-turn memory and inline citations.",
+          "Asking “Who served in the war?” returns an answer drawn from several records, a row of reference tiles linking to the exact photos and documents behind it, and suggested follow-up questions.",
         width: 997,
         height: 748,
+      },
+      {
+        // Placeholder art until a capture from the live app replaces it.
+        // Swap the file in place and update width/height to the real capture.
+        src: "/images/echoes/1b-researcher.png",
+        alt: "Échoes Family Researcher following the trail on a multi-step question, narrating each search and lookup as it works",
+        title: "The Family Researcher",
+        caption:
+          "The Historian's more capable sibling: given a question no single search can answer, it uses tools to search the archive, look people up, and check the family tree, then searches again from what it found, narrating every step. I have used it for real research on my own family history, and it works.",
+        width: 1400,
+        height: 875,
       },
       {
         src: "/images/echoes/2-photos.png",
         alt: "Échoes photo archive, a grid of vintage family photos with era and family filter pills and a search bar",
         title: "The photo archive",
         caption:
-          "Every photo in the archive can be filtered by decade and by family branch. On upload, each image runs through a multi-stage pipeline: InsightFace (SCRFD) detects faces, MediaPipe maps a 478-point landmark mesh per face, Grok vision adds a scene description along with era and identity cues, and OpenAI then embeds the result. Those steps make the same photo reachable three ways: by semantic search, by the people detected in it, or by the era and family filters you see here.",
+          "Every photo, filtered by decade and family branch. Each one is searchable by what is in it and who is in it, not just by its filename.",
         width: 1396,
         height: 1183,
       },
@@ -207,7 +218,7 @@ export const projects: Project[] = [
         alt: "Échoes people directory, a grid of identified family members, each with a portrait cropped from archive photos",
         title: "People",
         caption:
-          "Identified family members, each shown with a portrait cropped from a photo they appear in. Every detected person in every photo gets its own per-instance OpenAI embedding, and face geometry is deliberately kept separate from identity so the embeddings never absorb unrelated scene description. That separation is what lets one person's appearances link up across decades, even when they age almost beyond recognition. A banner up top leads straight into the family tree.",
+          "Identified family members, each with a portrait cropped from a photo they appear in. The same person is matched across decades, even when they age almost beyond recognition.",
         width: 1372,
         height: 1265,
       },
@@ -216,7 +227,7 @@ export const projects: Project[] = [
         alt: "Échoes person profile for Bertha Schillie, with a generated biography, photo appearances, and a relationship sidebar",
         title: "A person's profile",
         caption:
-          "A single person's page: a generated biography, every photo they appear in, and a relationship sidebar resolving parents, siblings, and children. Name resolution runs off aliases as the single source of truth (one preferred alias per person, enforced with a partial unique index), so every variant of a name collapses to one identity across the archive and in the Historian's answers.",
+          "A single person's page: a generated biography, every photo they appear in, and a sidebar of parents, siblings, and children. Every spelling and nickname resolves to one person.",
         width: 1349,
         height: 1185,
       },
@@ -225,7 +236,7 @@ export const projects: Project[] = [
         alt: "Échoes Stories view, scanned letters and documents grouped into collections and individual documents",
         title: "Stories & documents",
         caption:
-          "Scanned letters, journals, certificates, and clippings, sorted into curated collections (here, “Bertha's WW2 Letters” and “Military Stories and Records”) alongside standalone documents. Each page flows through a vision-based OCR pipeline with chunk-level embeddings, behind an SSN-redaction guard that blocks any upload containing a detected social-security number before it is ever stored.",
+          "Scanned letters, journals, certificates, and clippings, sorted into collections like “Bertha's WW2 Letters” alongside standalone documents. Any upload containing a social security number is blocked before it is stored.",
         width: 1361,
         height: 1233,
       },
@@ -234,7 +245,7 @@ export const projects: Project[] = [
         alt: "Échoes document reader showing a 1944 Western Union telegram with a Historian summary and page-image / transcript toggle",
         title: "Document reader",
         caption:
-          "A stored document opened in the reader: a 1944 Western Union telegram reporting Pvt. Loren Schillie missing in action. A document-scoped Historian summary sits at the top, with a toggle between the scanned page image and its OCR'd transcript. In this mode the Historian loads the open document's chunks into context, so your questions are answered against exactly what you are reading.",
+          "A 1944 Western Union telegram reporting Pvt. Loren Schillie missing in action, with a summary up top and a toggle between the scanned page and its transcript. Questions asked here are answered from this document alone.",
         width: 1091,
         height: 1184,
       },
@@ -243,7 +254,7 @@ export const projects: Project[] = [
         alt: "Échoes family relationship graph laid out by generation, from great-grandparents down to the children's generation",
         title: "The family graph",
         caption:
-          "The whole family rendered as a generational graph that runs from the great-grandparents down to the children's generation. Each person is a node, linked to the others by parent, sibling, spouse, and step-relationships. This same graph is what the Family Researcher reads, and what it can write after a family member reviews the proposal. Kinship questions return a computed degree and an ordered chain. People a document names who are not on the tree yet surface as additions to confirm, rather than as a silent gap.",
+          "The whole family as a generational graph, from the great-grandparents down to the children. This is the tree the Researcher reads, and the one it proposes additions to for a family member to confirm.",
         width: 910,
         height: 717,
       },
@@ -267,74 +278,50 @@ export const projects: Project[] = [
     ],
     designDecisions: [
       {
-        title: "The agent never writes the family tree.",
-        body: "The Researcher loop is read-only by construction. Anything that would change the graph goes through a deterministic reconciliation pass after the answer, then a review modal where a family member confirms, edits, or rejects each proposed person and relationship, with duplicates defaulting to “link to existing.” A fifth “propose additions” tool was tried first. The model reliably skipped it, because writing the answer is the turn that ends the loop, and it would even claim in prose that it had prepared a card it never produced. So proposing is no longer the model's to decide. Agent proposes, human approves, code writes.",
+        title: "Agent proposes, human approves, code writes.",
+        body: "The Researcher never edits the family tree itself. After it answers, a separate pass compares the people the documents named against the tree and proposes what is missing, and a family member confirms, edits, or rejects each row before anything is written. An earlier version gave the model a tool to propose additions directly; it reliably skipped that step and sometimes claimed in prose to have done it. So proposing is no longer the model's to decide.",
       },
       {
-        title: "The Historian retrieves once. The Researcher loops.",
-        body: "Same hybrid retrieval stack, different intelligence. The Historian classifies intent and searches once. The Researcher is a bounded, handwritten agent loop (not the SDK's auto-stepper) so every turn is observable: it streams a live “Following the trail” narration, persists the full trace with hop and token metrics, and stops at a hard hop cap rather than wandering. The corpus-search tool reuses the existing retriever unchanged and bypasses the intent classifier; the agent is the intelligence that classifier approximated, and it composes the next query from what the last hop found.",
-      },
-      {
-        title: "Kinship is computed from the graph, not counted by the model.",
-        body: "“How is X related to Y?” used to burn hops walking relatives generation by generation, and the model would miscount the “greats.” A dedicated tool runs a two-person BFS over confirmed edges and returns the degree plus the ordered chain of people that links them. The prompt tells the model to state that degree verbatim. A disconnected result is an honest “no recorded link,” not a cue to invent one.",
-      },
-      {
-        title: "A tagged name is an ID, not a spelling.",
-        body: "Typing @ in the ask box opens the family roster. Selecting a person inserts a pill bound to their id, so “which Loren?” is resolved before the first hop. The model receives those ids on the seeded question and skips name lookup for tagged people; a hop saved, and no disambiguation lottery. Untagged questions behave exactly as they did before.",
+        title: "The Historian answers once. The Researcher follows the trail.",
+        body: "Both run on the same search underneath. The Historian searches once and answers. The Researcher loops, and every step of that loop is visible on screen and saved afterward, with a fixed limit on how many steps it may take before it has to conclude from what it found. Relationships like “great-great-grandfather” come from the family tree, not from the model counting generations.",
       },
       {
         title: "Think harder is a second model, not a longer prompt.",
-        body: "After a standard run on Grok, a family member can re-run the exact same question through Claude Opus. The button is hidden unless a distinct advanced model is configured, so it never silently re-runs the same model and pretends to be deeper. Model identity is env-driven through the Vercel AI Gateway; swapping the pairing is a config change, never a code change.",
+        body: "After a standard run, a family member can send the exact same question to a stronger reasoning model. The button only appears when a different model is actually configured, so it never re-runs the same one and pretends to be deeper.",
       },
     ],
+    // Deliberately terse, matching the Hearth grid: each card names one
+    // capability and one constraint. Provider tags carry the vendor names.
     aiIntegrations: [
-      {
-        name: "Family Historian RAG chat",
-        provider: "xAI / Grok",
-        description:
-          "Streaming, citation-grounded conversational search across the entire archive. Query intent is classified, hybrid retrieval runs, results are synthesized with multi-turn memory and inline source citations. A document-scoped mode answers questions about an open document with its chunks loaded into context.",
-      },
       {
         name: "Family Researcher agent",
         provider: "xAI / Grok + Anthropic / Claude Opus",
         description:
-          "A handwritten multi-hop agent loop with four read tools: hybrid corpus search, person lookup (fuzzy, batched, nickname-aware), immediate relatives, and graph-computed kinship. It streams a live trail of each hop, persists the full trace, and can re-run the same question on Claude Opus via “Think harder.” The loop never writes; a hard hop cap forces a conclusion from whatever it found.",
+          "Multi-step search that plans, searches, checks the family tree, and searches again, showing each step live. Read-only: any proposed change to the tree goes to a person for review.",
       },
       {
-        name: "Graph reconciliation",
-        provider: "In-house (structured output)",
-        description:
-          "After a graph-touching run, a deterministic generateObject pass names people and relationships the documents support that the tree is missing. Candidates are deduped against existing people, sibling intents auto-wire into primitive edges, and already-recorded links are dropped. A family member reviews the proposal row by row; only confirmed rows commit, stamped researcher-origin.",
-      },
-      {
-        name: "Photo vision analysis",
+        name: "Family Historian chat",
         provider: "xAI / Grok",
         description:
-          "Each uploaded photo is analyzed for scene description, estimated era, suggested date, setting, condition, mood, visible text, color/BW classification, and per-person identity cues. Returns structured JSON that feeds metadata, search, and the people pipeline.",
+          "Conversational search across the whole archive, every answer linked to its source photos and documents. A document-scoped mode answers questions about only the page you are reading.",
       },
       {
-        name: "Document OCR pipeline",
+        name: "Photo understanding",
+        provider: "xAI / Grok + OpenAI embeddings",
+        description:
+          "Each photo gets a description, an estimated era, and a per-person signature so the same face can be found across decades of appearance changes.",
+      },
+      {
+        name: "Document reading",
         provider: "xAI / Grok (vision)",
         description:
-          "Scanned pages and PDFs are OCR'd via vision, chunked, and embedded for retrieval. Includes SSN redaction enforcement that blocks uploads containing detected social security numbers.",
+          "Scanned letters and records become searchable text. Uploads containing a social security number are blocked before they are stored.",
       },
       {
-        name: "Hybrid retrieval",
-        provider: "pgvector + PostgreSQL FTS",
+        name: "Search that understands meaning",
+        provider: "Supabase pgvector + full-text search",
         description:
-          "Semantic vector search fused with full-text search via Reciprocal Rank Fusion (RRF), scoped per asset type (photos, documents, people). Supports filter pushdown for date range, location, and document subtype.",
-      },
-      {
-        name: "Per-instance person embeddings",
-        provider: "OpenAI text-embedding-3-small",
-        description:
-          "Every detected person in every photo gets its own 1536-dim embedding. Similarity is ranked with Bayesian shrinkage and a gender filter so a face can be matched across decades despite appearance changes.",
-      },
-      {
-        name: "Query intent classification",
-        provider: "xAI / Grok",
-        description:
-          "Natural-language queries are classified (asset_lookup / semantic / structured / combined) and parsed for entities: people with alias resolution, dates, and locations. The classification gates which retrieval strategy runs, keeping latency low for simple lookups while giving the Historian what it needs for synthesis questions.",
+          "Meaning-based and keyword search combined, so a question in plain English finds the right records even when the words do not match.",
       },
     ],
     status: "live",
