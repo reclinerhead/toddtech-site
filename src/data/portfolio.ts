@@ -24,6 +24,15 @@ export interface DesignDecision {
   body: string;
 }
 
+/** A self-hosted, silent walkthrough video. Width and height set the frame's aspect ratio. */
+export interface Video {
+  src: string;
+  poster: string;
+  title: string;
+  width: number;
+  height: number;
+}
+
 /** One page of a project that anonymous visitors can open, no account needed. */
 export interface PublicPage {
   /** Short line above the title, e.g. the utility or organization the page covers. */
@@ -56,6 +65,10 @@ export interface Project {
   designDecisions?: DesignDecision[];
   /** Live pages open to anonymous visitors. Renders a section under the system diagram when present. */
   publicPages?: PublicPages;
+  /** Architecture walkthrough. Renders in the system diagram's slot, under the hero. */
+  howItWorksVideo?: Video;
+  /** UI walkthrough. Renders in the gallery's slot, after Overview. */
+  tourVideo?: Video;
   liveUrl?: string;
   liveUrlLabel?: string;
   liveUrlNote?: string;
@@ -97,62 +110,23 @@ export const projects: Project[] = [
     ],
     thumbnail: aviaryHero,
     heroImage: aviaryHero,
-    screenshots: [
-      {
-        src: "/images/aviary/01-life-list.png",
-        alt: "The Aviary life list: a grid of species tiles with portraits and visit counts",
-        title: "The life list",
-        caption:
-          "Every species the yard has ever announced, one tile each, with portraits, visit counts, search, and sort. Counts tick live as detections arrive over MQTT, and new lifers append without reshuffling the grid, because the UI's standing rule is that nothing on the page ever moves under the reader's eyes.",
-        width: 1124,
-        height: 778,
-      },
-      {
-        src: "/images/aviary/02-live-ticker.png",
-        alt: "The live arrivals ticker with inline audio clip playback",
-        title: "Latest events",
-        caption:
-          "The live arrivals ticker: each row is a visit opening, with species, confidence, source microphone, and an inline player for the ~9-second clip. Playback routes through a WebAudio gain-and-limiter graph because real yard birds are often faint, and the clip server speaks RFC 7233 byte ranges because without them iOS Safari refuses to play audio at all, a lesson learned the hard way on a real phone.",
-        width: 357,
-        height: 414,
-      },
-      {
-        src: "/images/aviary/03-species-profile.png",
-        alt: "A species profile page with portrait, standings, and a pannable visits chart",
-        title: "A species profile",
-        caption:
-          "Each species gets a magazine-style page: Wikipedia portrait and description, standings against the rest of the yard, and a visits chart that pans back through the whole record, with daily bars for how often and an hourly curve for when in the day. The curve is a monotone (Fritsch–Carlson) spline so sparse counts can never draw an impossible −2 visits at 3 a.m.",
-        width: 1497,
-        height: 973,
-      },
-      {
-        src: "/images/aviary/04-field-notes.png",
-        alt: "The field journal spread: AI-written notes with margin figures drawn from stored statistics",
-        title: "The field journal",
-        caption:
-          "Two pages of AI-written field notes per species, one on the bird's daily rhythm and one on how weather moves its odds, rendered as a journal spread with margin figures drawn from the stored statistics: a 24-hour activity strip and weather-effect pills. The numbers come from joining detections against the yard's own weather record (an on-site Ecowitt station at home, OpenWeatherMap at stations without one), and the locally hosted LLM only narrates the precomputed figures, so the figures and the prose can never disagree.",
-        width: 1499,
-        height: 888,
-      },
-      {
-        src: "/images/aviary/05-events-archive.png",
-        alt: "The full detection record with sticky day headers and species filter pills",
-        title: "The full record",
-        caption:
-          "The browsable archive: infinite scroll under sticky day headers, combinable species filter pills, jump-to-date, and shareable filtered URLs. All of it reads from the same append-only SQLite store the listener writes; the web tier never writes the bird record.",
-        width: 1511,
-        height: 1060,
-      },
-      {
-        src: "/images/aviary/06-station-birdhouse.png",
-        alt: "A family station: a stylized card for the station at my mom's house, whose dashboard matches the life list above",
-        title: "A family station",
-        caption:
-          "The same codebase in its station role at my mom's house: one env file of local facts, its own broker, database, and dashboard, and a masthead that says whose yard it is. It updates itself from a stable release branch promoted nightly (a systemd watcher pulls and restarts), and it has run unattended on a fanless mini PC and a clip-on mic since early August.",
-        width: 1600,
-        height: 1000,
-      },
-    ],
+    // Two Claude Design videos carry the architecture and the UI tour, in
+    // place of the spec-sheet diagram and the captioned screenshot grid.
+    howItWorksVideo: {
+      src: "/video/aviary/how-it-works.mp4",
+      poster: "/video/aviary/how-it-works-poster.jpg",
+      title: "How it works",
+      width: 1280,
+      height: 720,
+    },
+    tourVideo: {
+      src: "/video/aviary/guided-tour.mp4",
+      poster: "/video/aviary/guided-tour-poster.jpg",
+      title: "A guided tour",
+      width: 1280,
+      height: 720,
+    },
+    screenshots: [],
     tags: ["Edge ML", "BirdNET", "Python", "Next.js", "MQTT"],
     techStack: [
       "Python",

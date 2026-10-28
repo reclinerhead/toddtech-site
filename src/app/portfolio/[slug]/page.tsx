@@ -13,8 +13,8 @@ import { Tag } from "@/app/components/Tag";
 import { ProjectGallery } from "@/app/components/ProjectGallery";
 import { ProjectGalleryGrid } from "@/app/components/ProjectGalleryGrid";
 import { HeroScreenshot } from "@/app/components/HeroScreenshot";
-import { AviarySystemDiagram } from "@/app/components/AviarySystemDiagram";
 import { HearthSystemDiagram } from "@/app/components/HearthSystemDiagram";
+import { ProjectVideo } from "@/app/components/ProjectVideo";
 
 interface RouteParams {
   params: Promise<{ slug: string }>;
@@ -54,7 +54,6 @@ export async function generateMetadata({
 // hero instead of prose. Each is a hand-built one-off, so this is a lookup by
 // slug rather than anything in the data module.
 const systemDiagrams: Record<string, () => React.ReactElement> = {
-  aviary: AviarySystemDiagram,
   hearth: HearthSystemDiagram,
 };
 
@@ -188,6 +187,18 @@ export default async function PortfolioDetailPage({ params }: RouteParams) {
         </section>
       )}
 
+      {/* ── How it works video (takes the diagram's slot) ── */}
+      {project.howItWorksVideo && (
+        <section className="py-16 lg:py-20" aria-label="How it works">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <span className="inline-block text-cyan-400 text-xs font-semibold tracking-[0.2em] uppercase mb-6">
+              {project.howItWorksVideo.title}
+            </span>
+            <ProjectVideo video={project.howItWorksVideo} />
+          </div>
+        </section>
+      )}
+
       {/* ── Public pages (only when the project has any) ── */}
       {project.publicPages && project.publicPages.pages.length > 0 && (
         <section
@@ -302,6 +313,21 @@ export default async function PortfolioDetailPage({ params }: RouteParams) {
             </h2>
           </div>
           <ProjectGalleryGrid screenshots={project.screenshots} />
+        </section>
+      )}
+
+      {/* ── Tour video (takes the gallery's slot) ── */}
+      {project.tourVideo && (
+        <section className="py-16 lg:py-20">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <span className="inline-block text-cyan-400 text-xs font-semibold tracking-[0.2em] uppercase mb-3">
+              Inside the app
+            </span>
+            <h2 className="font-display text-2xl md:text-3xl font-bold tracking-tight mb-10 text-white">
+              {project.tourVideo.title}
+            </h2>
+            <ProjectVideo video={project.tourVideo} />
+          </div>
         </section>
       )}
 
