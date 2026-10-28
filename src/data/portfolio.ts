@@ -54,7 +54,7 @@ export interface Project {
   slug: string;
   title: string;
   tagline: string;
-  /** Overview paragraphs. Omitted on projects whose system diagram tells the story. */
+  /** Overview paragraphs. Omitted on projects whose how-it-works video tells the story. */
   description?: string[];
   thumbnail: Screenshot;
   heroImage?: Screenshot;
@@ -63,9 +63,9 @@ export interface Project {
   techStack: string[];
   aiIntegrations?: AIIntegration[];
   designDecisions?: DesignDecision[];
-  /** Live pages open to anonymous visitors. Renders a section under the system diagram when present. */
+  /** Live pages open to anonymous visitors. Renders a section under the how-it-works video when present. */
   publicPages?: PublicPages;
-  /** Architecture walkthrough. Renders in the system diagram's slot, under the hero. */
+  /** Architecture walkthrough. Renders under the hero. */
   howItWorksVideo?: Video;
   /** UI walkthrough. Renders in the gallery's slot, after Overview. */
   tourVideo?: Video;
@@ -323,10 +323,17 @@ export const projects: Project[] = [
     title: "Hearth",
     tagline:
       "The user manual your house never came with. Hearth turns photos, documents, and public records into the maintenance plan, inventory record, and historical archive your home has never had.",
-    // No Overview section: the system diagram under the hero carries the
+    // No Overview section: the how-it-works video under the hero carries the
     // architecture, and the screenshots below carry the rest.
     thumbnail: hearthHero,
     heroImage: hearthHero,
+    howItWorksVideo: {
+      src: "/video/hearth/how-it-works.mp4",
+      poster: "/video/hearth/how-it-works-poster.jpg",
+      title: "How it works",
+      width: 1280,
+      height: 720,
+    },
     screenshots: [
       {
         src: "/images/hearth/01-dashboard.png",
@@ -445,7 +452,7 @@ export const projects: Project[] = [
         body: "Hearth's durable jobs run on Vercel Workflows, where a naive policy retries every failure as if it were transient. Hearth instead marks its orchestrator-internal errors as non-retryable: constraint violations, missing entities, a failed write. Those surface a deterministic bug in about two seconds rather than grinding through roughly thirty seconds of pointless retries, while genuinely transient errors like a flaky EPA call or a gateway hiccup still retry. That one distinction turns the workflow layer into a fast feedback loop during development instead of a latency tax.",
       },
     ],
-    // Deliberately terse: the diagram above already explains how these fit
+    // Deliberately terse: the video above already explains how these fit
     // together, so each card only has to name the call and its one constraint.
     aiIntegrations: [
       {
@@ -486,7 +493,7 @@ export const projects: Project[] = [
       },
     ],
     // The only pages on any project that an anonymous visitor can open, so
-    // they get their own section right under the diagram.
+    // they get their own section right under the video.
     publicPages: {
       heading: "Public water quality findings",
       intro:

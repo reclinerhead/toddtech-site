@@ -13,7 +13,6 @@ import { Tag } from "@/app/components/Tag";
 import { ProjectGallery } from "@/app/components/ProjectGallery";
 import { ProjectGalleryGrid } from "@/app/components/ProjectGalleryGrid";
 import { HeroScreenshot } from "@/app/components/HeroScreenshot";
-import { HearthSystemDiagram } from "@/app/components/HearthSystemDiagram";
 import { ProjectVideo } from "@/app/components/ProjectVideo";
 
 interface RouteParams {
@@ -50,13 +49,6 @@ export async function generateMetadata({
   };
 }
 
-// Projects whose architecture is carried by a spec-sheet diagram under the
-// hero instead of prose. Each is a hand-built one-off, so this is a lookup by
-// slug rather than anything in the data module.
-const systemDiagrams: Record<string, () => React.ReactElement> = {
-  hearth: HearthSystemDiagram,
-};
-
 const statusStyles: Record<ProjectStatus, { label: string; className: string }> = {
   live: {
     label: "Live",
@@ -83,7 +75,6 @@ export default async function PortfolioDetailPage({ params }: RouteParams) {
 
   const { prev, next } = getAdjacentProjects(slug);
   const status = statusStyles[project.status];
-  const SystemDiagram = systemDiagrams[project.slug];
 
   return (
     <div className="min-h-screen text-white">
@@ -178,16 +169,7 @@ export default async function PortfolioDetailPage({ params }: RouteParams) {
         <div className="h-px bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent" />
       </div>
 
-      {/* ── System diagram ── */}
-      {SystemDiagram && (
-        <section className="py-16 lg:py-20" aria-label="System architecture">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <SystemDiagram />
-          </div>
-        </section>
-      )}
-
-      {/* ── How it works video (takes the diagram's slot) ── */}
+      {/* ── How it works video ── */}
       {project.howItWorksVideo && (
         <section className="py-16 lg:py-20" aria-label="How it works">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -285,7 +267,7 @@ export default async function PortfolioDetailPage({ params }: RouteParams) {
         </div>
       </section>
 
-      {/* ── Overview (omitted when a system diagram carries the story) ── */}
+      {/* ── Overview (omitted when a how-it-works video carries the story) ── */}
       {project.description && project.description.length > 0 && (
         <section className="py-16 lg:py-20">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
