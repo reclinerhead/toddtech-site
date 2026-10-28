@@ -1,6 +1,6 @@
 import type { Video } from "@/data/portfolio";
 
-// Framed like the hero screenshot and the system diagrams: an exhibit on the
+// Framed like the hero screenshot: an exhibit on the
 // dark page. No autoplay; these run over a minute and should start from the
 // title card when the reader chooses, not partway through.
 export function ProjectVideo({ video }: { video: Video }) {
