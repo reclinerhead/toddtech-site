@@ -52,6 +52,8 @@ Because the video carries the architecture, the page around it is deliberately t
 
 Échoes has no video, which is why these sections are optional rather than deleted: it keeps an Overview, but a three-paragraph one that leads with what the archive is, puts the Family Researcher second, and closes with how uploads become searchable. Its captions, three Design Decisions, and five Integration cards follow the same terseness as Hearth.
 
+The Conservatory and the Quarry have no video either and follow the Échoes shape: a three-paragraph Overview, a captioned screenshot grid, two Design Decisions, and three terse Integration cards. Both carry `repoUrl` (their repos are public) and a `liveUrlNote` saying they run privately on the family's home network. Their screenshots are captured from the running apps on the house LAN (`conservatory.lan`, `quarry.lan`) with headless Chromium at a 1280 px viewport and 1.25 device scale, so full-width shots are 1600 px wide and card crops are the card plus a 20 px margin, saved as JPEG. Re-capture rather than edit them when the apps change. Source facts live in `~/projects/conservatory` and `~/projects/quarry` (each repo's README is the design brief and `docs/guide/` the as-built state); the Quarry's accuracy figures (38 expert-identified specimens, four models, agreement right nearly nine times in ten) come from its Phase 0 spike and must stay as the repo states them.
+
 Facts in any copy written around the videos must match the source project repos (the Aviary platform lives in `C:\WEBDEV\project-squirrel-grok`; check its TechnicalGuide.md and `Servers/` runbooks before making claims about station status or hardware).
 
 ## Contact pipeline

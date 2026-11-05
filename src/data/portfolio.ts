@@ -98,6 +98,20 @@ const hearthHero: Screenshot = {
   height: 1056,
 };
 
+const conservatoryHero: Screenshot = {
+  src: "/images/conservatory/0-hero.jpg",
+  alt: "The Conservatory's life list: plant cards with common and scientific names, filters by place, recently added species, and the collection at a glance",
+  width: 1600,
+  height: 1075,
+};
+
+const quarryHero: Screenshot = {
+  src: "/images/quarry/0-hero.jpg",
+  alt: "The Quarry's home page: a morning greeting, the stone collection as photo cards with filters, the newest additions, and the household's Mohs scale",
+  width: 1600,
+  height: 1125,
+};
+
 export const projects: Project[] = [
   {
     slug: "aviary",
@@ -519,6 +533,228 @@ export const projects: Project[] = [
     },
     status: "live",
     order: 2,
+  },
+  {
+    slug: "conservatory",
+    title: "The Conservatory",
+    tagline:
+      "A plant collection that catalogs itself. Photograph a plant, confirm its name with one tap, and get a page that explains what it is, how to keep it alive, and which of your other plants it is related to.",
+    // Written for a hiring audience: what it is and who it is for, how a plant
+    // gets in, then what the household gets back. Vendor names stay in the tags.
+    description: [
+      "The Conservatory is a living inventory of the plants in one family, built for three gardeners who each tried to keep a list on paper and gave up. One raises around 150 succulents and cacti under a grow light; two keep large flower beds outdoors. Photos taken on a phone go in, and the app does the bookkeeping: what the plant is, where it lives, when it arrived, and every photo of it since.",
+      "Adding a plant starts with a photo. A small worker on the home server sends it to an identification service trained on tens of millions of labeled plant photos, and a few seconds later the owner sees the best few candidates. One tap names it, typing the name from the nursery tag overrides it, and any mistake can be undone. Nothing enters the collection without a person confirming it.",
+      "Once a species is named, the app builds its page: a summary and reference image, its place in the plant family tree, a care sheet written by AI for the household's climate zone, and every plant of that species the family owns. A printable QR tag goes on each pot, so a phone camera can answer “what is this, and when did I repot it?” Every gardening term on screen carries a small info mark that explains it in plain language, because the people using it have grown plants for decades without ever being told what a genus is.",
+    ],
+    thumbnail: conservatoryHero,
+    heroImage: conservatoryHero,
+    screenshots: [
+      {
+        src: "/images/conservatory/1-species.jpg",
+        alt: "The Conservatory species page for Tree Aeonium 'Black Prince', with the family's own photo beside the reference image",
+        title: "A page for every species",
+        caption:
+          "Each species leads with the family's own photo, with the reference image beside it. The name line keeps the nursery's variety name, because most of a succulent shelf is named on a tag, not in a field guide.",
+        width: 1600,
+        height: 950,
+      },
+      {
+        src: "/images/conservatory/2-care-sheet.jpg",
+        alt: "A six-part care sheet covering light, water, soil, hardiness, fertilizing, and dormancy, written for zone 6a",
+        title: "A care sheet, written once",
+        caption:
+          "Light, water, soil, hardiness, feeding, and dormancy, written by AI once per species for the household's climate zone. Every figure it uses is kept with what it rests on, one tap away.",
+        width: 1166,
+        height: 956,
+      },
+      {
+        src: "/images/conservatory/3-relatives.jpg",
+        alt: "Relatives you already have: plants in the collection from the same genus and the same family",
+        title: "Relatives you already have",
+        caption:
+          "The other plants in the collection from the same genus and the same family. It is a simple lookup against the plant family tree, not a model call, and it quietly teaches how a collection fits together.",
+        width: 1166,
+        height: 1469,
+      },
+      {
+        src: "/images/conservatory/4-pot-tags.jpg",
+        alt: "The pot tags page: choose plants by place, choose the first free label, and preview the printable sheet of QR labels",
+        title: "Pot tags",
+        caption:
+          "Choose the plants, choose the first unused label on a partly used sheet, and print QR tags on standard address labels. Scanning one opens that plant's page, and the address never changes, so a tag printed today still works years from now.",
+        width: 1600,
+        height: 1250,
+      },
+    ],
+    tags: ["Python", "Next.js", "SQLite", "Pl@ntNet", "Claude"],
+    techStack: [
+      "Python",
+      "Pl@ntNet API",
+      "GBIF API",
+      "Wikipedia API",
+      "Vercel AI Gateway",
+      "Anthropic / Claude Sonnet",
+      "SQLite",
+      "Next.js 16 (App Router)",
+      "React 19",
+      "TypeScript",
+      "Tailwind CSS",
+      "QR codes (server-rendered SVG)",
+      "Caddy",
+      "systemd / Ubuntu",
+      "pytest / Vitest",
+      "GitHub Actions",
+    ],
+    designDecisions: [
+      {
+        title: "Measure the identifier before designing the screen.",
+        body: "The first thing built was a throwaway script that ran real photos from the family's own shelf through the plant identifier. Houseplants came back confident. Succulents usually came back with the right genus and an unsure species, because most of them are nursery hybrids that no field guide names. That shaped the whole design: the owner always confirms, a plant keeps the name on its nursery tag beside the scientific one, and care advice works at the genus level, which is how plant care works anyway.",
+      },
+      {
+        title: "The camera roll is the offline mode.",
+        body: "The far flower bed has no Wi-Fi, and nobody wanted to install an app. So photos are taken with the phone's ordinary camera and sent later from the house, one plant at a time. Each photo is shrunk in the browser and sent on its own with retries, so a dropped connection loses nothing, and every plant waits in a queue on the home server that survives a restart. A strip on the home page says how many plants are waiting for a name.",
+      },
+    ],
+    // Terse, matching the other grids: each card names one call and its one constraint.
+    aiIntegrations: [
+      {
+        name: "Plant identification",
+        provider: "Pl@ntNet",
+        description:
+          "A classifier trained for exactly this job, preferred over a general AI model that would cost more per photo and know less. Calls go through a single queue that stays inside the free daily limit.",
+      },
+      {
+        name: "Care sheets",
+        provider: "Anthropic / Claude Sonnet",
+        description:
+          "Written once per species, not per visit, so a 150-plant collection costs pennies. A validator rejects any sheet that skips a section or runs outside its length limits before it reaches the page.",
+      },
+      {
+        name: "Species enrichment",
+        provider: "GBIF + Wikipedia",
+        description:
+          "The plant family tree and a plain-language summary, fetched once per species while the queue is idle and stored, so pages keep working when either service is down.",
+      },
+    ],
+    liveUrlNote: "Runs privately on the family's home network; no public demo",
+    repoUrl: "https://github.com/reclinerhead/conservatory",
+    status: "live",
+    order: 4,
+  },
+  {
+    slug: "quarry",
+    title: "The Quarry",
+    tagline:
+      "A rock and mineral collection that explains itself. Two AI models from different companies suggest what a stone is, a kitchen-table test settles the lookalikes, and the owner has the final word.",
+    // The two-opinion design is the story here, so it gets the middle
+    // paragraph; the measured numbers back it and must match the repo's Phase 0.
+    description: [
+      "The Quarry is a living catalog of the rocks, minerals, and fossils in one family, the stones that come home from beaches, creek beds, and gem shows and end up in egg cartons and windowsills. Photograph a stone with a coin beside it for scale, and the Quarry suggests what it is, adds it to the collection once a person confirms the name, and builds it a page: its hardness, its crystal shape, what it is made of, and where in Michigan and across the country it has been found.",
+      "Plants and birds have purpose-built identification services. Rocks do not, so the Quarry uses general vision AI, and before building anything I measured how far to trust it. On photos of 38 expert-identified specimens, the first guess was right about three times in five, whichever of four models made it, and the most expensive did no better than the cheapest. What held up was agreement: when two models from different companies named the same mineral, they were right nearly nine times in ten. So the app speaks in words, not percentages. It says “probably galena” when the two agree and “could be pyrite or chalcopyrite” when they do not.",
+      "When the candidates are lookalikes, the app suggests the one simple test that would tell them apart: scratch it on glass, streak it on the back of a tile, drop vinegar on it, hold a magnet to it. The answer goes back to the models as new evidence. The owner always confirms the final name and records how they know, from a dealer's label, from the tests, or from someone at the rock club, so over time the family builds its own answer key for judging the next model before switching to it.",
+    ],
+    thumbnail: quarryHero,
+    heroImage: quarryHero,
+    screenshots: [
+      {
+        src: "/images/quarry/1-confirm.jpg",
+        alt: "The Quarry confirm screen: a fossil coral photographed beside a penny for scale, named Favosites, with the question “How do you know?” and its answers",
+        title: "Naming a stone",
+        caption:
+          "A fossil coral photographed beside a penny, so the models can judge its size. Once it is named, the app asks how the owner knows, which is what lets the family score the models against real answers later.",
+        width: 1600,
+        height: 975,
+      },
+      {
+        src: "/images/quarry/2-stone.jpg",
+        alt: "A stone page for Quartz with Pyrite on matrix: the main photo, its tags, and more photos of the stone",
+        title: "A page for every stone",
+        caption:
+          "Named the way a dealer's label at a rock show names it: the main mineral first, the others “with” it, and the rock it grew “on.” Below the photos sit its specimen label, its home tests, and how it was named.",
+        width: 1600,
+        height: 1119,
+      },
+      {
+        src: "/images/quarry/3-properties.jpg",
+        alt: "Mineral properties for Quartz: formula, Mohs hardness, crystal system, luster, streak, cleavage, and specific gravity",
+        title: "What the mineral is",
+        caption:
+          "The mineral's reference card from the leading mineral database: formula, hardness, crystal system, luster, streak. Every term carries an info mark, because the person who built it could not tell quartz from calcite either.",
+        width: 1093,
+        height: 545,
+      },
+      {
+        src: "/images/quarry/4-where-found.jpg",
+        alt: "Where it's found: Quartz localities counted by Michigan county and by state across the USA",
+        title: "Where it is found",
+        caption:
+          "How many places the mineral has been reported, county by county in Michigan and state by state across the country. Looked up once, saved, and refreshed monthly, so the page never waits on an outside service.",
+        width: 1093,
+        height: 891,
+      },
+      {
+        src: "/images/quarry/5-periodic-table.jpg",
+        alt: "Your periodic table: nine elements lit up from the stones in the collection, with copper and lead newly added",
+        title: "Your periodic table",
+        caption:
+          "Every element in every named stone lights up on a periodic table, and tapping one lists the stones that carry it. Alongside it, the ten minerals of the hardness scale, talc to diamond, are a set to collect.",
+        width: 1600,
+        height: 1450,
+      },
+    ],
+    tags: ["Vision AI", "Python", "Next.js", "SQLite", "Mindat"],
+    techStack: [
+      "Python",
+      "Vercel AI Gateway",
+      "Anthropic / Claude Haiku",
+      "Google / Gemini Flash",
+      "OpenMindat API",
+      "Wikipedia API",
+      "Pillow / HEIC decoding",
+      "SQLite",
+      "Next.js 16 (App Router)",
+      "React 19",
+      "TypeScript",
+      "Tailwind CSS",
+      "Caddy",
+      "systemd / Ubuntu",
+      "pytest / Vitest",
+      "GitHub Actions",
+    ],
+    designDecisions: [
+      {
+        title: "Agreement is the signal, not the model's own confidence.",
+        body: "A model's stated confidence turned out to be a weak guide: its most confident answers were nearly always right, but they came on only a third of the stones, and a low score often changed when the same photo was asked again. Two models from different companies agreeing was a far better signal, better even than two models from the same company agreeing. Both cost a fraction of a cent per photo, so a family's whole backlog costs a dollar or two to identify, and either model can be swapped with a one-line configuration change.",
+      },
+      {
+        title: "A test is offered only when it would change the answer.",
+        body: "A clear crystal could be quartz, calcite, or fluorite. Quartz scratches glass, calcite fizzes in vinegar, and fluorite does neither, so that is the test the screen offers. A test whose result every candidate would share is never shown, and each possible result is worded by candidate, so the owner can see which name it supports. It sits behind “want to be sure?” because the app names what it can without it.",
+      },
+    ],
+    aiIntegrations: [
+      {
+        name: "Two-opinion identification",
+        provider: "Anthropic / Claude Haiku + Google / Gemini Flash",
+        description:
+          "Both models read the same photos and notes and must answer in one fixed format: candidates, the features they saw, and the tests that would separate them. Agreement becomes “probably”; disagreement becomes “could be.”",
+      },
+      {
+        name: "Mineral lookups",
+        provider: "OpenMindat + Wikipedia",
+        description:
+          "Every name the models suggest is checked against the mineral database, which tells two names for the same stone apart from a real disagreement. Records are fetched once and saved, so pages keep working when either service is down.",
+      },
+      {
+        name: "Home tests as evidence",
+        provider: "In-house",
+        description:
+          "A recorded scratch test is compared against each candidate's known hardness, and a name that cannot fit carries a quiet note. “Not tried” is never treated as “no.”",
+      },
+    ],
+    liveUrlNote: "Runs privately on the family's home network; no public demo",
+    repoUrl: "https://github.com/reclinerhead/quarry",
+    status: "live",
+    order: 5,
   },
 ];
 
