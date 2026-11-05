@@ -538,7 +538,7 @@ export const projects: Project[] = [
     slug: "conservatory",
     title: "The Conservatory",
     tagline:
-      "A plant collection that catalogs itself. Photograph a plant, confirm its name with one tap, and get a page that explains what it is, how to keep it alive, and which of your other plants it is related to.",
+      "A field guide to the plants you already own. Photograph a plant, confirm its name with one tap, and get a page that explains what it is, how to keep it alive, and which of your other plants it is related to.",
     // Written for a hiring audience: what it is and who it is for, how a plant
     // gets in, then what the household gets back. Vendor names stay in the tags.
     description: [
