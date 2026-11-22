@@ -58,6 +58,8 @@ export interface Project {
   description?: string[];
   thumbnail: Screenshot;
   heroImage?: Screenshot;
+  /** The app itself, shown at the foot of the hero when `heroImage` is art rather than a screenshot. */
+  appScreenshot?: Screenshot;
   screenshots: Screenshot[];
   tags: string[];
   techStack: string[];
@@ -78,6 +80,13 @@ export interface Project {
 }
 
 const aviaryHero: Screenshot = {
+  src: "/images/aviary/hero-jay.jpg",
+  alt: "A blue jay perched on a monitor showing The Aviary's Blue Jay species page, on a weathered table in autumn woods, a hand pointing at the screen",
+  width: 1728,
+  height: 1152,
+};
+
+const aviaryDashboard: Screenshot = {
   src: "/images/aviary/0-hero.png",
   alt: "The Aviary dashboard: life list, live arrivals ticker, and new-arrival cards",
   width: 1507,
@@ -122,8 +131,9 @@ export const projects: Project[] = [
       "The Aviary is the public face of a wildlife-monitoring platform that listens to the yard around the clock. An always-on listener service pulls live audio from outdoor microphones, runs Cornell's BirdNET classifier on every 3-second window, and files each accepted detection into an append-only bird record: a life list of every species ever heard (its first-heard moment and first recording preserved forever), one curated audio clip per visit, and the visit history behind them. The Aviary web app presents that record as something a family actually wants to open: a life-list grid of species tiles, a live ticker of arrivals with inline clip playback, and per-species profile pages with portraits, visit-rhythm charts, and AI-written field notes.",
       "The field notes are the feature I'm proudest of. Each species gets two short essays, one on its daily rhythm and one on how weather moves its odds, built by joining every detection against time of day and the yard's own weather record. At home that record comes from an Ecowitt weather station on the property, logging wind, temperature, and rainfall every five minutes; stations without weather hardware read OpenWeatherMap instead. Hyperlocal truth where it exists, a clean fallback where it doesn't. The statistics keep themselves honest: every claim is an exposure-normalized rate ('shows up more in rain' only counts against how many rainy hours there actually were), computed inside each species' own active hours so a dawn effect can't masquerade as a weather effect, and the on-site rain sensor outranks the weather API when the two disagree about whether it's raining.",
     ],
-    thumbnail: aviaryHero,
+    thumbnail: aviaryDashboard,
     heroImage: aviaryHero,
+    appScreenshot: aviaryDashboard,
     // Two Claude Design videos carry the architecture and the UI tour, in
     // place of the spec-sheet diagram and the captioned screenshot grid.
     howItWorksVideo: {

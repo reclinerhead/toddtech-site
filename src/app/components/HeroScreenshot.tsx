@@ -9,9 +9,14 @@ import type { Screenshot } from "@/data/portfolio";
 
 interface HeroScreenshotProps {
   screenshot: Screenshot;
+  /** Preload the image. On by default; turn off for a frame below the fold. */
+  priority?: boolean;
 }
 
-export function HeroScreenshot({ screenshot }: HeroScreenshotProps) {
+export function HeroScreenshot({
+  screenshot,
+  priority = true,
+}: HeroScreenshotProps) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -38,7 +43,7 @@ export function HeroScreenshot({ screenshot }: HeroScreenshotProps) {
             fill
             sizes="(min-width: 1024px) 64rem, 100vw"
             className="object-cover"
-            priority
+            priority={priority}
           />
         </div>
         <div className="absolute top-3 right-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-black/60 backdrop-blur-sm border border-white/10 text-xs text-cyan-200 opacity-0 group-hover:opacity-100 transition-opacity">

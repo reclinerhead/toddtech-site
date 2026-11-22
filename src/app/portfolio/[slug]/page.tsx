@@ -162,6 +162,15 @@ export default async function PortfolioDetailPage({ params }: RouteParams) {
               {project.liveUrlNote}
             </p>
           )}
+
+          {project.appScreenshot && (
+            <div className="mt-12">
+              <HeroScreenshot
+                screenshot={project.appScreenshot}
+                priority={false}
+              />
+            </div>
+          )}
         </div>
       </section>
 
