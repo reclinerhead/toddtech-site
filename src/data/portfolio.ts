@@ -87,10 +87,10 @@ const aviaryHero: Screenshot = {
 };
 
 const aviaryDashboard: Screenshot = {
-  src: "/images/aviary/0-hero.png",
+  src: "/images/aviary/dashboard.png",
   alt: "The Aviary dashboard: life list, live arrivals ticker, and new-arrival cards",
-  width: 1507,
-  height: 973,
+  width: 1395,
+  height: 1236,
 };
 
 const echoesThumbnail: Screenshot = {

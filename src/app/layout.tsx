@@ -37,9 +37,9 @@ export const metadata: Metadata = {
     description,
     images: [
       {
-        url: "/images/aviary/0-hero.png",
-        width: 1507,
-        height: 973,
+        url: "/images/aviary/dashboard.png",
+        width: 1395,
+        height: 1236,
         alt: "The Aviary dashboard, one of Todd Wyatt's production AI systems",
       },
     ],
